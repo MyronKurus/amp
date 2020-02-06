@@ -1,0 +1,86 @@
+<div class="container">
+  <div class="row personal-data">
+    <h3>1. Особисті дані вагітної</h3>
+    <br>
+    <p>Зріст  168 см
+      <br>
+      Вага 58 кг
+      <br>
+      Вагітність №1
+      <br>
+      Термін гестаціі 18 тижнів
+    </p>
+  </div>
+  <div class="row medicines">
+    <h3>1. Особисті дані вагітної</h3>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Country</th>
+        <th scope="col">Area</th>
+        <th scope="col">Population</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let country of countries; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>
+          <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
+          {{ country.name }}
+        </td>
+        <td>{{ country.area | number }}</td>
+        <td>{{ country.population | number }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row anamnesis">
+    <h3>3. Особисті дані вагітної</h3>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Country</th>
+        <th scope="col">Area</th>
+        <th scope="col">Population</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let country of countries; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>
+          <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
+          {{ country.name }}
+        </td>
+        <td>{{ country.area | number }}</td>
+        <td>{{ country.population | number }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row serology">
+    <h3>4. Особисті дані вагітної</h3>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Country</th>
+        <th scope="col">Area</th>
+        <th scope="col">Population</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let country of countries; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>
+          <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
+          {{ country.name }}
+        </td>
+        <td>{{ country.area | number }}</td>
+        <td>{{ country.population | number }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+h1 {
+  text-align: center;
+}
+
+form {
+  margin-top: 90px;
+}
+
+.row {
+  margin-bottom: 30px;
+}
+
+input.ng-touched.ng-invalid {
+  border:solid red 2px;
+}
+
+input.ng-touched.ng-valid {
+  border:solid green 2px;
+}
+
+.alert.alert-danger {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+}

@@ -1,0 +1,62 @@
+<div class="container">
+  <h1>Список пацієнтів</h1>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Пацієнт</span>
+        </div>
+        <input type="text" class="form-control">
+      </div>
+    </div>
+    <div class="col-md-9">
+        <!-- <button type="button" class="btn btn-primary" (click)="openModal(editProfileModal, user)">Edit</button> -->
+      <button class="btn btn-primary" (click)="openModal(editProfileModal, user)" style="float: right">Додати нового пацієнта</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #editProfileModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="addPatientLabel">Додати нового пацієнта</h5>
+    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="addPatientForm" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+        <label for="lastName" class="col-sm-4 col-form-label">Прізвище</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="lastName" id="lastName" >
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="firstName" class="col-sm-4 col-form-label">Ім'я</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="firstName" id="firstName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="middleName" class="col-sm-4 col-form-label">По-батькові</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="middleName" id="middleName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="input-group">
+          <label for="dateOfBirth" class="col-sm-4 col-form-label">Дата народження</label>
+          <div class="col-sm-8">
+            <input  class="form-control" placeholder="yyyy-mm-dd" id="dateOfBirth" (click)="d.toggle()"
+                    name="dp" [formControl]="addPatientForm.controls.dateOfBirth" ngbDatepicker #d="ngbDatepicker" #spy>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Відмінити</button>
+        <button type="submit" class="btn btn-primary">Зберегти</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

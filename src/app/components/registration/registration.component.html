@@ -1,0 +1,115 @@
+<div class="container">
+  <h1>Зареєструватися</h1>
+  <form [formGroup]="registerForm" novalidate (ngSubmit)="submit()">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-2 offset-md-3">
+        </div>
+        <div class="col-md-4">
+          <label>
+            <input type="radio" value="1" formControlName="role">
+            <span style="margin-left: 5px;">Гінеколог</span>
+          </label>
+          <label style="margin-left: 40px;">
+            <input type="radio" value="2" formControlName="role">
+            <span style="margin-left: 5px;">Сімейний лікар</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-2 offset-md-3">
+          <label>Прізвище:</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+          <div *ngIf="registerForm.controls['lastName'].invalid && registerForm.controls['lastName'].touched" class="invalid-feedback">
+            <div>Last Name is required</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 offset-md-3">
+          <label>Ім'я:</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+          <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+            <div *ngIf="f.firstName.errors.required">First Name is required</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 offset-md-3">
+          <label>По-батькові:</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" formControlName="middleName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+          <div *ngIf="submitted && f.middleName.errors" class="invalid-feedback">
+              <div *ngIf="f.middleName.errors.required">Middle Name is required</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 offset-md-3">
+          <label>Email:</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+              <div *ngIf="f.email.errors.required">Email is required</div>
+              <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 offset-md-3">
+          <label>Пароль:</label>
+        </div>
+        <div class="col-md-4">
+          <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+            <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 offset-md-3">
+          <label>Підтвердити пароль:</label>
+        </div>
+        <div class="col-md-4">
+            <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
+            <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+                <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
+                <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+            </div>
+          <br>
+          <a routerLink="/login">Увійти</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2 offset-md-3"></div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <button class="btn btn-primary" [disabled]="registerForm.invalid" style="float: right">
+            Зареєструватися
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- <div class="form-group">
+    <label for="password" class="control-label">Contraseña:</label>
+    <input type="password" class="form-control" formControlName="password" title="Please enter your password">
+    <p class="help-block" *ngIf="signUpForm.get('password').hasError('required') && signUpForm.get('password').touched">Debe ingresar una contraseña</p>
+ </div>
+ <div class="form-group">
+    <label for="confirmedPassword" class="control-label">Confirmar Contraseña:</label>
+    <input type="password" class="form-control" formControlName="confirmedPassword"  title="Please re-enter your password">
+    <p class="help-block" *ngIf="signUpForm.get('confirmedPassword').hasError('required') && signUpForm.get('confirmedPassword').touched">Password must be required</p>
+    <p class="help-block" *ngIf="signUpForm.get('confirmedPassword').hasError('passwordMismatch') && signUpForm.get('confirmedPassword').touched">password does not match</p>
+ </div> -->
