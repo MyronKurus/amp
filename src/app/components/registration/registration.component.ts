@@ -13,16 +13,6 @@ export class RegistrationComponent implements OnInit {
   submitted = false;
   registerForm: FormGroup;
   constructor(private formBuilder: FormBuilder, private user: UserService, private router: Router) {
-    // this.myForm = new FormGroup({
-    //   'role': new FormControl('', [ Validators.required ]),
-    //   'lastName': new FormControl('', [ Validators.required ]),
-    //   'firstName': new FormControl('', [ Validators.required ]),
-    //   'middleName': new FormControl('', [ Validators.required ]),
-    //   'email': new FormControl('', [ Validators.required, Validators.email ]),
-    //   'password': new FormControl('', [ Validators.required, Validators.minLength(6)]),
-    //   'confirmPassword': new FormControl('', [ Validators.required ])
-    // });
-
     this.registerForm = this.formBuilder.group({
       role: ['', Validators.required ],
       firstName: ['', Validators.required],
@@ -41,43 +31,20 @@ export class RegistrationComponent implements OnInit {
 
   submit() {
     this.submitted = true;
-    // console.log(this.myForm.value);
-
-    // const formData = {
-    //   email: this.myForm.value.email,
-    //   password: this.myForm.value.password,
-    //   firstName: this.myForm.value.firstName,
-    //   lastName: this.myForm.value.lastName,
-    //   middleName: this.myForm.value.middleName,
-    //   birthDate: '2020-02-01T15:47:08.131Z',
-    //   role: this.myForm.value.role,
-    //   doctorId: 112
-    // };
-
-    // console.log(formData);
-
     const formData = {
       data: {
-        email: 'user5@mail.com',
-        password: '12345qA!',
-        firstName: 'Jane',
-        lastName: 'Smith',
-        middleName: 'John',
-        birthDate: '2020-02-01T15:47:08.131Z',
-        role: this.registerForm.value.role,
-        doctorId: 1078
+        email: this.registerForm.value.email,
+        password: this.registerForm.value.password,
+        firstName: this.registerForm.value.firstName,
+        lastName: this.registerForm.value.lastName,
+        middleName: this.registerForm.value.middleName,
+        role: this.registerForm.value.role
       }
     };
-
-    console.log(this.registerForm.value);
-
-
-
-    // this.user.register(formData)
-    //   .subscribe((data) => {
-    //     console.log(data);
-    //     this.router.navigate(['/login']);
-    //   }, (error) => { console.log(error); });
+    this.user.register(formData)
+      .subscribe((data) => {
+        this.router.navigate(['/login']);
+      }, (error) => { console.log(error); });
   }
 
   ngOnInit() {

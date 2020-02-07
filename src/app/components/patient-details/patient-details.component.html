@@ -1,84 +1,96 @@
 <div class="container">
   <div class="row personal-data">
     <h3>1. Особисті дані вагітної</h3>
+  </div>
+  <div class="row">
+    <p>
+      Зріст  168 см
     <br>
-    <p>Зріст  168 см
-      <br>
       Вага 58 кг
-      <br>
+    <br>
       Вагітність №1
-      <br>
+    <br>
       Термін гестаціі 18 тижнів
     </p>
   </div>
   <div class="row medicines">
-    <h3>1. Особисті дані вагітної</h3>
+    <h3>2. Лікарські засоби, застосовані жінкою від зачаття до народження дитини</h3>
     <table class="table table-striped">
       <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Country</th>
-        <th scope="col">Area</th>
-        <th scope="col">Population</th>
+        <th scope="col">№</th>
+        <th scope="col">Дата застосування ЛЗ</th>
+        <th scope="col">ЛЗ (торгова назва)</th>
+        <th scope="col">Міжнародна непатентована назва ЛЗ</th>
+        <th scope="col">Добова доза</th>
+        <th scope="col">Спосіб введення</th>
+        <th scope="col">Тривалість застосування</th>
+        <th scope="col">Показання</th>
+        <th scope="col">Побічні реакції</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let country of countries; index as i">
         <th scope="row">{{ i + 1 }}</th>
-        <td>
+        <!-- <td>
           <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
           {{ country.name }}
         </td>
         <td>{{ country.area | number }}</td>
-        <td>{{ country.population | number }}</td>
+        <td>{{ country.population | number }}</td> -->
       </tr>
       </tbody>
     </table>
   </div>
   <div class="row anamnesis">
-    <h3>3. Особисті дані вагітної</h3>
+    <h3>3.Алергологічний анамнез</h3>
+    <p>Підвищена чутливість чи непереносимість ЛЗ у минулому:</p>
     <table class="table table-striped">
       <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Country</th>
-        <th scope="col">Area</th>
-        <th scope="col">Population</th>
+        <th scope="col">№</th>
+        <th scope="col">ЛЗ (торгова назва)</th>
+        <th scope="col">Міжнародна непатентована назва ЛЗ</th>
+        <th scope="col">Доза</th>
+        <th scope="col">Спосіб введення</th>
+        <th scope="col">Прояви, що спостерігалися</th>
+        <th scope="col">Тривалість проявів</th>
+        <th scope="col">Проведені заходи</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let country of countries; index as i">
         <th scope="row">{{ i + 1 }}</th>
-        <td>
+        <!-- <td>
           <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
           {{ country.name }}
         </td>
         <td>{{ country.area | number }}</td>
-        <td>{{ country.population | number }}</td>
+        <td>{{ country.population | number }}</td> -->
       </tr>
       </tbody>
     </table>
   </div>
   <div class="row serology">
-    <h3>4. Особисті дані вагітної</h3>
-    <table class="table table-striped">
+    <h3>4.Результати серологічних досліджень крові вагітної</h3>
+    <p>Персоніфікований перелік ЛЗ, які потенційно небезпечні щодо розвитку алергійних реакцій у вагітної та новонародженого. Оцінка вмісту в сироватці специфічних IgE до конкретних ЛЗ</p>
+    <table class="table table-striped col-md-7">
       <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Country</th>
-        <th scope="col">Area</th>
-        <th scope="col">Population</th>
+        <th scope="col">МО/мл визначена концентрація</th>
+        <th scope="col">EAST-клас</th>
+        <th scope="col"> Оцінка вмісту в сироватці
+            амоксицилін-специфічних IgE</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let country of countries; index as i">
         <th scope="row">{{ i + 1 }}</th>
-        <td>
+        <!-- <td>
           <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
           {{ country.name }}
         </td>
-        <td>{{ country.area | number }}</td>
-        <td>{{ country.population | number }}</td>
+        <td>{{ country.area | number }}</td> -->
       </tr>
       </tbody>
     </table>

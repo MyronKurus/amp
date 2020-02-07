@@ -21,8 +21,8 @@ export class LoginComponent implements OnInit {
   submit() {
     const formData = {
       data: {
-        'email': 'user@mail.com',
-        'password': '12345qA!'
+        'email': this.myForm.value.userEmail,
+        'password': this.myForm.value.userPassword
       }
     };
 

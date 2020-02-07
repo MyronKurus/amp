@@ -1,4 +1,7 @@
 <div class="container">
+  <div class="row">
+    <div class="col-md-2 offset-md-10"><h5 *ngIf="doctor.firstName">Вітаю, {{doctor.firstName}}</h5></div>
+  </div>
   <h1>Список пацієнтів</h1>
   <div class="row">
     <div class="col-md-3">
@@ -10,15 +13,17 @@
       </div>
     </div>
     <div class="col-md-9">
-        <!-- <button type="button" class="btn btn-primary" (click)="openModal(editProfileModal, user)">Edit</button> -->
       <button class="btn btn-primary" (click)="openModal(editProfileModal, user)" style="float: right">Додати нового пацієнта</button>
+    </div>
+    <div class="col-md-9 offset-md-3">
+      <button class="btn btn-primary" (click)="onGetUserList()" style="float: right">onGetUserList</button>
     </div>
   </div>
 </div>
 
 <ng-template #editProfileModal let-modal>
   <div class="modal-header">
-    <h5 class="modal-title" id="addPatientLabel">Додати нового пацієнта</h5>
+    <h4 class="modal-title" id="addPatientLabel">Додати нового пацієнта</h4>
     <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
