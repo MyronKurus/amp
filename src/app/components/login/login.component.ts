@@ -12,7 +12,7 @@ import { switchMap, tap } from 'rxjs/operators';
 export class LoginComponent implements OnInit {
 
   myForm: FormGroup;
-  constructor(private user: UserService, private router: Router) {
+  constructor(private userService: UserService, private router: Router) {
     this.myForm = new FormGroup({
       'userEmail': new FormControl('', [ Validators.required, Validators.email ]),
       'userPassword': new FormControl('', [ Validators.required ])
@@ -27,10 +27,10 @@ export class LoginComponent implements OnInit {
       }
     };
 
-    this.user.login(formData)
+    this.userService.login(formData)
       .pipe(tap((data: any) => {
-        this.user.setToken(data.item.token); }),
-        switchMap(() => this.user.getUserMe()))
+        this.userService.setToken(data.item.token); }),
+        switchMap(() => this.userService.getUserMe()))
         .subscribe(() => {
           this.router.navigate(['patient-list']);
         }, (error) => { console.log(error); });

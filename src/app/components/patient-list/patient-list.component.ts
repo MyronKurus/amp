@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-patient-list',
@@ -11,7 +12,8 @@ import { UserService } from '../../services/user.service';
 export class PatientListComponent implements OnInit {
   doctor: any;
   patientList: any[];
-  addPatientForm: FormGroup;
+  addHinekologyPatientForm: FormGroup;
+  addFamilyPatientForm: FormGroup;
 
   user = {
     id: '',
@@ -21,34 +23,44 @@ export class PatientListComponent implements OnInit {
     dateOfBirth: ''
   };
 
+  familyUser = {
+    personalKey: '',
+    password: ''
+  };
+
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.doctor = this.userService.getDoctor();
-    if (this.doctor.role === 'Gynecologist') {
-      this.onGetPatientList();
-    }
-    this.addPatientForm = this.fb.group({
+    this.onGetPatientList();
+    this.userService.getAllUsersList()
+      .subscribe(data => console.log(data));
+    this.addHinekologyPatientForm = this.fb.group({
       firstName: [''],
       lastName: [''],
       middleName: [''],
       dateOfBirth: ['']
     });
+    this.addFamilyPatientForm = this.fb.group({
+      personalKey: [''],
+      password: ['']
+    });
   }
 
-  openModal(targetModal, user) {
-    this.addPatientForm.reset();
+  openHinecologyModal(targetModal, user) {
+    this.addHinekologyPatientForm.reset();
 
     this.modalService.open(targetModal, {
       centered: true,
       backdrop: 'static'
     });
 
-    this.addPatientForm.patchValue({
+    this.addHinekologyPatientForm.patchValue({
       firstname: user.firstname,
       lastname: user.lastname,
       username: user.username,
@@ -56,9 +68,9 @@ export class PatientListComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onHinecologySubmit() {
     this.modalService.dismissAll();
-    const patient = {...this.addPatientForm.getRawValue()};
+    const patient = {...this.addHinekologyPatientForm.getRawValue()};
     const patientData = {
       data: {
         email: '123@mail.com',
@@ -72,17 +84,49 @@ export class PatientListComponent implements OnInit {
       }
     };
 
-    this.userService.registerPatient(patientData)
+    this.userService.register(patientData)
       .subscribe((data: any) => this.patientList.push(data.item));
-
   }
 
-  onGetUserList() {
-    this.userService.getUserList()
-      .subscribe(res => {
-        console.log(res);
+  openFamilyModal(targetModal, familyUser) {
+    this.addFamilyPatientForm.reset();
+
+    this.modalService.open(targetModal, {
+      centered: true,
+      backdrop: 'static'
+    });
+
+    this.addFamilyPatientForm.patchValue({
+      personalKey: familyUser.personalKey,
+      password: familyUser.password
+    });
+  }
+
+  onFamilySubmit() {
+    this.modalService.dismissAll();
+    const patientData = {
+      data: {...this.addFamilyPatientForm.getRawValue()}
+    };
+
+    this.userService.addPatientFamilyDoc(this.doctor.id, patientData)
+      .subscribe((data: any) => this.patientList.push(data.item.user));
+  }
+
+  onGetPatientInfo(patientId) {
+    this.userService.getPatientById(patientId)
+      .subscribe((data: any) => {
+        this.userService.setPatient(data.item);
+        this.router.navigate(['patient-details']);
       });
   }
+
+
+  // onGetUserList() {
+  //   this.userService.getAllUsersList()
+  //     .subscribe(res => {
+  //       console.log(res);
+  //     });
+  // }
 
   // onSavePatient() {
   //   const formData = {
@@ -109,12 +153,15 @@ export class PatientListComponent implements OnInit {
   // }
   onGetPatientList() {
     this.userService.getPatientList(this.doctor.id)
-      .subscribe((data: any) => { this.patientList = data.items; });
+      .subscribe((data: any) => this.patientList = data.items);
   }
 
-  onDeletePatient() {
-    this.userService.deletePatient(15)
-      .subscribe(data => console.log(data));
+  onDeletePatient(id, index) {
+    // if (this.doctor.role === 'Gynecologist') {
+    //   this.patientList.splice(index, 1);
+    //   this.userService.deletePatient(id)
+    //     .subscribe(data => console.log(data));
+    // }
   }
 
   onAddFamilyDoc() {
@@ -128,9 +175,9 @@ export class PatientListComponent implements OnInit {
       .subscribe(data => console.log(data));
   }
 
-  onGetFamilyPatients() {
-    this.userService.getPatientList(12)
-      .subscribe(data => console.log(data));
-  }
+  // onGetFamilyPatients() {
+  //   this.userService.getPatientList(12)
+  //     .subscribe(data => console.log(data));
+  // }
 }
 

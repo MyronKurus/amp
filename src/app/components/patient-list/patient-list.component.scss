@@ -14,10 +14,23 @@ ol {
   li {
     font-size: 28px;
 
+    a:not([href]) {
+      color: #007bff;
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+
     img {
       width: 32px;
       height: 32px;
       float: right;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 }

@@ -1,60 +1,99 @@
 <div class="container">
   <div class="row user-info">
-    <div class="col-md-6">
-      <h4>{{patient.lastName}} {{patient.firstName}} {{patient.middleName}}</h4>
-      <p>{{patient.birthDate}}</p>
+    <div class="col-md-4">
+      <h4>{{patient.user.lastName}} {{patient.user.firstName}} {{patient.user.middleName}}</h4>
+      <p>{{patient.user.birthDate | date: 'd.mm.yyyy'}}</p>
     </div>
-    <div class="col-md-6">
-      <p>Personal key: {{patient.personalKey}}</p>
-      <p>Password: {{patient.password}}</p>
+    <div class="col-md-8">
+      <p>Personal key: {{patient.user.personalKey}}</p>
+      <p>Password: {{patient.user.patientPass}}</p>
     </div>
+    <a [routerLink]="['/patient-list']">Повернутися до списку пацієнтів</a>
   </div>
+  <hr>
   <div class="row personal-data">
-    <h3>1. Особисті дані вагітної</h3>
-  </div>
-  <div class="row">
-    <p>
-      Зріст  168 см
-    <br>
-      Вага 58 кг
-    <br>
-      Вагітність №1
-    <br>
-      Термін гестаціі 18 тижнів
-    </p>
+    <div class="col-md-12">
+      <h3>1. Особисті дані вагітної</h3>
+    </div>
+    <div class="col-md-2">
+      <p>Зріст:</p>
+      <p>Вага:</p>
+      <p>Вагітність №:</p>
+      <p>Термін гестаціі:</p>
+    </div>
+    <div class="col-md-2" *ngIf="!editMode">
+      <p><span *ngIf="patient.user.height">{{patient.user.height}}, см</span></p>
+      <p><span *ngIf="patient.user.weight">{{patient.user.weight}}, кг</span></p>
+      <p><span *ngIf="patient.user.pregnancyNumber">{{patient.user.pregnancyNumber}}</span></p>
+      <p><span *ngIf="patient.user.gestationPeriod">{{patient.user.gestationPeriod}}</span></p>
+      <p style="margin-top: -16px;"><span *ngIf="!patient.user.height">0, см</span></p>
+      <p><span *ngIf="!patient.user.weight">0, кг</span></p>
+      <p><span *ngIf="!patient.user.pregnancyNumber">0</span></p>
+      <p><span *ngIf="!patient.user.gestationPeriod">0</span></p>
+    </div>
+    <div class="col-md-2" *ngIf="editMode">
+      <form [formGroup]="patientDetailsForm" (ngSubmit)="onPatientDetailsSubmit()">
+        <div class="form-group row">
+          <input type="text" class="form-control" formControlName="height" id="height" >
+        </div>
+        <div class="form-group row">
+          <input type="text" class="form-control" formControlName="weight" id="weight" >
+        </div>
+        <div class="form-group row">
+          <input type="text" class="form-control" formControlName="pregnancyNumber" id="pregnancyNumber" >
+        </div>
+        <div class="form-group row">
+          <input type="text" class="form-control" formControlName="gestationPeriod" id="gestationPeriod" >
+        </div>
+      </form>
+    </div>
+    <div class="col-md-8" *ngIf="doctor.role === 'Gynecologist'">
+      <button type="button" class="btn btn-danger" *ngIf="!editMode" (click)="onDeletePatient()">Видалити</button>
+      <button type="button" class="btn btn-primary" *ngIf="!editMode" (click)="onEditModeToggle()">Редагувати</button>
+      <button type="submit" class="btn btn-secondary" *ngIf="editMode" (click)="onEditModeToggle()">Скасувати</button>
+      <button type="submit" class="btn btn-primary" *ngIf="editMode" (click)="onPatientDetailsSubmit()">Зберегти</button>
+    </div>
   </div>
   <div class="row medicines">
-    <h3>2. Лікарські засоби, застосовані жінкою від зачаття до народження дитини</h3>
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th scope="col">№</th>
-        <th scope="col">Дата застосування ЛЗ</th>
-        <th scope="col">ЛЗ (торгова назва)</th>
-        <th scope="col">Міжнародна непатентована назва ЛЗ</th>
-        <th scope="col">Добова доза</th>
-        <th scope="col">Спосіб введення</th>
-        <th scope="col">Тривалість застосування</th>
-        <th scope="col">Показання</th>
-        <th scope="col">Побічні реакції</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let country of countries; index as i">
-        <th scope="row">{{ i + 1 }}</th>
-        <!-- <td>
-          <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
-          {{ country.name }}
-        </td>
-        <td>{{ country.area | number }}</td>
-        <td>{{ country.population | number }}</td> -->
-      </tr>
-      </tbody>
-    </table>
+    <div class="col-md-12">
+      <h3>2. Лікарські засоби, застосовані жінкою від зачаття до народження дитини</h3>
+    </div>
+    <div class="col-md-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+          <th scope="col">№</th>
+            <th scope="col">Дата застосування ЛЗ</th>
+            <th scope="col">ЛЗ (торгова назва)</th>
+            <th scope="col">Міжнародна непатентована назва ЛЗ</th>
+            <th scope="col">Добова доза</th>
+            <th scope="col">Спосіб введення</th>
+            <th scope="col">Тривалість застосування</th>
+            <th scope="col">Показання</th>
+            <th scope="col">Побічні реакції</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr *ngFor="let country of countries; index as i">
+            <th scope="row">{{ i + 1 }}</th>
+               <td>
+                <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
+                {{ country.name }}
+              </td>
+              <td>{{ country.area | number }}</td>
+              <td>{{ country.population | number }}</td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
   </div>
   <div class="row anamnesis">
-    <h3>3.Алергологічний анамнез</h3>
-    <p>Підвищена чутливість чи непереносимість ЛЗ у минулому:</p>
+    <div class="col-md-12">
+      <h3>3.Алергологічний анамнез</h3>
+    </div>
+    <div class="col-md-12">
+      <p>Підвищена чутливість чи непереносимість ЛЗ у минулому:</p>
+    </div>
     <table class="table table-striped">
       <thead>
       <tr>
