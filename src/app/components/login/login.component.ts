@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -26,20 +27,13 @@ export class LoginComponent implements OnInit {
       }
     };
 
-    /**
-      email: 'user@mail.com',
-      password: '12345qA!',
-      firstName: 'Jane',
-      lastName: 'Smith',
-      middleName: 'John',
-     */
-
     this.user.login(formData)
-      .subscribe((data: any) => {
-        console.log(data.item.token);
-        this.user.setToken(data.item.token);
-        this.router.navigate(['patient-list']);
-      }, (error) => { console.log(error); });
+      .pipe(tap((data: any) => {
+        this.user.setToken(data.item.token); }),
+        switchMap(() => this.user.getUserMe()))
+        .subscribe(() => {
+          this.router.navigate(['patient-list']);
+        }, (error) => { console.log(error); });
   }
 
   ngOnInit() {

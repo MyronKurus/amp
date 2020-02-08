@@ -10,6 +10,7 @@ import { UserService } from '../../services/user.service';
 })
 export class PatientListComponent implements OnInit {
   doctor: any;
+  patientList: any[];
   addPatientForm: FormGroup;
 
   user = {
@@ -27,24 +28,25 @@ export class PatientListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.doctor = this.userService.getDoctor();
+    if (this.doctor.role === 'Gynecologist') {
+      this.onGetPatientList();
+    }
     this.addPatientForm = this.fb.group({
       firstName: [''],
       lastName: [''],
       middleName: [''],
       dateOfBirth: ['']
     });
-    this.userService.getUserMe()
-      .subscribe((res: any) => {
-        this.doctor = { ...res.item };
-        console.log(this.doctor);
-      });
   }
 
   openModal(targetModal, user) {
+    this.addPatientForm.reset();
+
     this.modalService.open(targetModal, {
       centered: true,
       backdrop: 'static'
-   });
+    });
 
     this.addPatientForm.patchValue({
       firstname: user.firstname,
@@ -52,7 +54,6 @@ export class PatientListComponent implements OnInit {
       username: user.username,
       dateOfBirth: user.dateOfBirth
     });
-
   }
 
   onSubmit() {
@@ -60,29 +61,21 @@ export class PatientListComponent implements OnInit {
     const patient = {...this.addPatientForm.getRawValue()};
     const patientData = {
       data: {
-        email: 'patient2@mail.com',
-        password: 'pAssw0rd!',
+        email: '123@mail.com',
+        password: '12345!Qa',
         firstName: patient.firstName,
         lastName: patient.lastName,
         middleName: patient.middleName,
         birthDate: '1998-02-06T18:07:51.857Z',
+        role: 3,
         doctorId: 11
       }
     };
 
-    this.userService.register(patientData)
-      .subscribe(data => console.log(data));
+    this.userService.registerPatient(patientData)
+      .subscribe((data: any) => this.patientList.push(data.item));
 
   }
-
-  // onGetUserMe() {
-  //   this.userService.getUserMe()
-  //     .subscribe((res: any) => {
-  //       // console.log(res);
-  //       this.user = {...res.item};
-  //       console.log(this.user);
-  //     });
-  // }
 
   onGetUserList() {
     this.userService.getUserList()
@@ -91,31 +84,52 @@ export class PatientListComponent implements OnInit {
       });
   }
 
-  onSavePatient() {
-    const formData = {
-      data: {
-        firstName: 'Наталія',
-        lastName: 'Ткачук',
-        height: 0,
-        weight: 0,
-        pregnancyNumber: 0,
-        gestationPeriod: 0,
-        hypersensitivityLz: true,
-        doctorId: 11
-      }
-    };
-    this.userService.editPatient(12, formData)
-      .subscribe(res => {
-        console.log(res);
-      });
-  }
+  // onSavePatient() {
+  //   const formData = {
+  //     data: {
+  //       firstName: 'Наталія',
+  //       lastName: 'Ткачук',
+  //       height: 0,
+  //       weight: 0,
+  //       pregnancyNumber: 0,
+  //       gestationPeriod: 0,
+  //       hypersensitivityLz: true,
+  //       doctorId: 11
+  //     }
+  //   };
+  //   this.userService.editPatient(12, formData)
+  //     .subscribe(res => {
+  //       console.log(res);
+  //     });
+  // }
 
   // onGetUserById() {
   //   this.userService.getUserById(5)
   //     .subscribe(res => console.log(res));
   // }
   onGetPatientList() {
-    this.userService.getPatientList(11)
+    this.userService.getPatientList(this.doctor.id)
+      .subscribe((data: any) => { this.patientList = data.items; });
+  }
+
+  onDeletePatient() {
+    this.userService.deletePatient(15)
+      .subscribe(data => console.log(data));
+  }
+
+  onAddFamilyDoc() {
+    const patient = {
+      data: {
+        personalKey: 'VABrAGEAYwBoAHUAawAuAEkAdgBhAG4AbgBhAA==',
+        password: 'UYsxft989!'
+      }
+    };
+    this.userService.addPatientFamilyDoc(12, patient)
+      .subscribe(data => console.log(data));
+  }
+
+  onGetFamilyPatients() {
+    this.userService.getPatientList(12)
       .subscribe(data => console.log(data));
   }
 }

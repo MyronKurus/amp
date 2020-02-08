@@ -1,20 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
-interface Country {
-  name: string;
-  flag: string;
-  area: number;
-  population: number;
-}
-
-const COUNTRIES: Country[] = [
-  {
-    name: 'China',
-    flag: 'f/fa/Flag_of_the_People%27s_Republic_of_China.svg',
-    area: 9596960,
-    population: 1409517397
-  }
-];
 
 
 @Component({
@@ -24,11 +11,19 @@ const COUNTRIES: Country[] = [
 })
 export class PatientDetailsComponent implements OnInit {
 
-  countries = COUNTRIES;
+  id: string;
+  patient: any;
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private userService: UserService) { }
 
   ngOnInit() {
+    this.id = this.route.snapshot.params['id'];
+    this.userService.getUserById(this.id)
+      .subscribe((data: any) => {
+        this.patient = data.item;
+        console.log(this.patient);
+      });
+    //
   }
 
 }

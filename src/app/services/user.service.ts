@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class UserService {
 
   private authToken: string;
+  private doctor;
 
   constructor(private http: HttpClient) { }
 
@@ -14,6 +16,10 @@ export class UserService {
 
   public setToken(token: string) {
     this.authToken = token;
+  }
+
+  public getDoctor() {
+    return this.doctor;
   }
 
   public getContentTypeHeaders() {
@@ -36,7 +42,11 @@ export class UserService {
 
   public getUserMe() {
     const headers = this.getAuthHeaders();
-    return this.http.get('http://95.47.136.166:51145/api/1.0/User/Me', {headers});
+    return this.http.get('http://95.47.136.166:51145/api/1.0/User/Me', {headers})
+      .pipe(tap((user: any) => {
+        this.doctor = user.item;
+        console.log(this.doctor);
+      }));
   }
 
   public getUserList() {
@@ -44,9 +54,14 @@ export class UserService {
     return this.http.get('http://95.47.136.166:51145/api/1.0/User', {headers});
   }
 
-  public getUserById(doctorId) {
+  public getUserById(id) {
     const headers = this.getAuthHeaders();
-    return this.http.get(`http://95.47.136.166:51145/api/1.0/User/${doctorId}`, {headers});
+    return this.http.get(`http://95.47.136.166:51145/api/1.0/User/${id}`, {headers});
+  }
+
+  public registerPatient(data) {
+    const headers = this.getContentTypeHeaders();
+    return this.http.post('http://95.47.136.166:51145/api/1.0/User/register', data, {headers});
   }
 
   public editPatient(doctorId, patient) {
