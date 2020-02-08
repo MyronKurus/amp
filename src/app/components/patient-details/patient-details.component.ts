@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -15,9 +16,17 @@ export class PatientDetailsComponent implements OnInit {
   doctor: any;
   patient: any;
   patientDetailsForm: FormGroup;
+  childrenForm: FormGroup;
   editMode = false;
+  child = {
+    id: '',
+    firstname: '',
+    lastname: '',
+    middleName: '',
+    dateOfBirth: ''
+  };
 
-  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) { }
+  constructor(private fb: FormBuilder, private userService: UserService, private router: Router, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.patient = this.userService.getPatient();
@@ -30,6 +39,12 @@ export class PatientDetailsComponent implements OnInit {
       pregnancyNumber: [''],
       gestationPeriod: ['']
     });
+    this.childrenForm = this.fb.group({
+      firstName: [''],
+      lastName: [''],
+      middleName: [''],
+      dateOfBirth: ['']
+    });
   }
 
   onEditModeToggle() {
@@ -38,30 +53,57 @@ export class PatientDetailsComponent implements OnInit {
 
   onPatientDetailsSubmit() {
     this.patient.user = {...this.patient.user, ...this.patientDetailsForm.getRawValue()};
-    // this.patient.user = {...this.patientDetailsForm.getRawValue()};
     this.editMode = false;
-    const userData = {
-      data: {
-        ...this.patient.user
-      }
-    };
-    // console.log(this.patient.user);
-    // // const userData = {
-    // //   data: {}
-    // // }
+    const userData = { data: {...this.patient.user} };
     this.userService.editPatient(this.patient.user.id, userData)
-      .subscribe(res => {
-        console.log(res);
-      });
+      .subscribe(res => console.log(res));
   }
 
   onDeletePatient() {
-    this.router.navigate(['patient-list']);
-    // this.userService.deletePatient(this.patient.user.id)
-    //   .subscribe(data => {
-    //     console.log(data);
-    //     this.router.navigate(['patient-list']);
-    //   });
+    this.userService.deletePatient(this.patient.user.id)
+      .subscribe(data => {
+        console.log(data);
+        this.router.navigate(['patient-list']);
+      });
+  }
+
+  openChildrenModal(targetModal, user) {
+    this.childrenForm.reset();
+
+    this.modalService.open(targetModal, {
+      centered: true,
+      backdrop: 'static'
+    });
+
+    this.childrenForm.patchValue({
+      firstname: user.firstname,
+      lastname: user.lastname,
+      username: user.username,
+      dateOfBirth: user.dateOfBirth
+    });
+  }
+
+  onAddChildSubmit() {
+    this.modalService.dismissAll();
+    const child = {...this.childrenForm.getRawValue()};
+    const patientData = {
+      data: {
+        familyDoctorId: this.doctor.id,
+        motherId: this.patient.user.id,
+        firstName: child.firstName,
+        lastName: child.lastName,
+        middleName: child.middleName,
+        birthDate: '2018-02-08T18:08:21.335Z'
+      }
+    };
+
+    this.userService.addChild(patientData, this.patient.user.id)
+      .subscribe((data: any) => this.patient.children.push(data.item));
+  }
+
+  setChild(index) {
+    this.userService.setChild(this.patient.children[index]);
+    this.router.navigate(['child-info']);
   }
 
 }

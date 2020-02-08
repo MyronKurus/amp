@@ -14,6 +14,7 @@ export class PatientListComponent implements OnInit {
   patientList: any[];
   addHinekologyPatientForm: FormGroup;
   addFamilyPatientForm: FormGroup;
+  patients: any[];
 
   user = {
     id: '',
@@ -52,6 +53,12 @@ export class PatientListComponent implements OnInit {
     });
   }
 
+  onSearch(event) {
+    this.patients = this.patientList.filter((el: any) => {
+      return el.lastName.toLowerCase().indexOf(event.target.value) >= 0;
+    });
+  }
+
   openHinecologyModal(targetModal, user) {
     this.addHinekologyPatientForm.reset();
 
@@ -85,7 +92,10 @@ export class PatientListComponent implements OnInit {
     };
 
     this.userService.register(patientData)
-      .subscribe((data: any) => this.patientList.push(data.item));
+      .subscribe((data: any) => {
+        this.patientList.push(data.item);
+        this.patients.push(data.item);
+      });
   }
 
   openFamilyModal(targetModal, familyUser) {
@@ -109,7 +119,10 @@ export class PatientListComponent implements OnInit {
     };
 
     this.userService.addPatientFamilyDoc(this.doctor.id, patientData)
-      .subscribe((data: any) => this.patientList.push(data.item.user));
+      .subscribe((data: any) => {
+        this.patientList.push(data.item.user);
+        this.patients.push(data.item);
+      });
   }
 
   onGetPatientInfo(patientId) {
@@ -120,64 +133,22 @@ export class PatientListComponent implements OnInit {
       });
   }
 
-
-  // onGetUserList() {
-  //   this.userService.getAllUsersList()
-  //     .subscribe(res => {
-  //       console.log(res);
-  //     });
-  // }
-
-  // onSavePatient() {
-  //   const formData = {
-  //     data: {
-  //       firstName: 'Наталія',
-  //       lastName: 'Ткачук',
-  //       height: 0,
-  //       weight: 0,
-  //       pregnancyNumber: 0,
-  //       gestationPeriod: 0,
-  //       hypersensitivityLz: true,
-  //       doctorId: 11
-  //     }
-  //   };
-  //   this.userService.editPatient(12, formData)
-  //     .subscribe(res => {
-  //       console.log(res);
-  //     });
-  // }
-
-  // onGetUserById() {
-  //   this.userService.getUserById(5)
-  //     .subscribe(res => console.log(res));
-  // }
   onGetPatientList() {
     this.userService.getPatientList(this.doctor.id)
-      .subscribe((data: any) => this.patientList = data.items);
+      .subscribe((data: any) => {
+        this.patientList = data.items;
+        this.patients = data.items;
+      });
   }
 
   onDeletePatient(id, index) {
-    // if (this.doctor.role === 'Gynecologist') {
-    //   this.patientList.splice(index, 1);
-    //   this.userService.deletePatient(id)
-    //     .subscribe(data => console.log(data));
-    // }
+    const result = confirm('Ви справді хочете видалити пацієнта?');
+    if (result) {
+      this.patientList.splice(index, 1);
+      this.patients.splice(index, 1);
+      this.userService.deletePatient(id)
+        .subscribe(data => console.log(data));
+    }
   }
-
-  onAddFamilyDoc() {
-    const patient = {
-      data: {
-        personalKey: 'VABrAGEAYwBoAHUAawAuAEkAdgBhAG4AbgBhAA==',
-        password: 'UYsxft989!'
-      }
-    };
-    this.userService.addPatientFamilyDoc(12, patient)
-      .subscribe(data => console.log(data));
-  }
-
-  // onGetFamilyPatients() {
-  //   this.userService.getPatientList(12)
-  //     .subscribe(data => console.log(data));
-  // }
 }
 

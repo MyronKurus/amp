@@ -1,0 +1,92 @@
+<div class="container">
+  <div class="row child-info">
+    <div class="col-md-2">
+      <h4>{{child.lastName}} {{child.firstName}}</h4>
+        <p>{{child.birthDate | date: 'd.mm.yyyy'}}</p>
+      </div>
+      <div class="col-md-4 offset-md-6">
+        <h5>Мати</h5>
+        <p><a [routerLink]="['/patient-details']">{{patient.user.lastName}} {{patient.user.firstName}}</a></p>
+      </div>
+  </div>
+  <hr>
+
+  <div class="row personal-data">
+    <div class="col-md-12">
+      <h3>1. Особисті дані</h3>
+    </div>
+    <div class="col-md-2">
+      <p>Зріст:</p>
+      <p>Вага:</p>
+      <p>Вік, років:</p>
+    </div>
+    <div class="col-md-2" *ngIf="!editMode">
+      <p><span *ngIf="child.height">{{child.height}}, см</span></p>
+      <p><span *ngIf="child.weight">{{child.weight}}, кг</span></p>
+      <p style="margin-top: -16px;"><span *ngIf="!child.height">0, см</span></p>
+      <p><span *ngIf="!child.weight">0, кг</span></p>
+    </div>
+    <div class="col-md-2" *ngIf="editMode">
+      <form [formGroup]="childrenForm" (ngSubmit)="onPatientDetailsSubmit()">
+        <div class="form-group row">
+          <input type="text" class="form-control" formControlName="height" id="height" >
+        </div>
+        <div class="form-group row">
+          <input type="text" class="form-control" formControlName="weight" id="weight" >
+        </div>
+      </form>
+    </div>
+    <div class="col-md-8">
+      <button type="button" class="btn btn-danger" *ngIf="!editMode" (click)="onDeletePatient()">Видалити</button>
+      <button type="button" class="btn btn-primary" *ngIf="!editMode" (click)="onEditModeToggle()">Редагувати</button>
+      <button type="submit" class="btn btn-secondary" *ngIf="editMode" (click)="onEditModeToggle()">Скасувати</button>
+      <button type="submit" class="btn btn-primary" *ngIf="editMode" (click)="onPatientDetailsSubmit()">Зберегти</button>
+    </div>
+  </div>
+
+  <div class="row medicines">
+    <div class="col-md-12">
+      <h3>2. Лікарські засоби, застосовані дитині від дня народження*:</h3>
+    </div>
+    <div class="col-md-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+          <th scope="col">№</th>
+            <th scope="col">Дата застосування ЛЗ</th>
+            <th scope="col">ЛЗ (торгова назва)</th>
+            <th scope="col">Міжнародна непатентована назва ЛЗ</th>
+            <th scope="col">Добова доза</th>
+            <th scope="col">Спосіб введення</th>
+            <th scope="col">Тривалість застосування</th>
+            <th scope="col">Показання</th>
+            <th scope="col">Побічні реакції</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr *ngFor="let country of countries; index as i">
+            <th scope="row">{{ i + 1 }}</th>
+               <td>
+                <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
+                {{ country.name }}
+              </td>
+              <td>{{ country.area | number }}</td>
+              <td>{{ country.population | number }}</td>
+          </tr> -->
+          <tr>
+            <td>1</td>
+            <td>01.01.2020</td>
+            <td>Вітамін С</td>
+            <td></td>
+            <td>0,5г</td>
+            <td>Каплі</td>
+            <td>2 дні</td>
+            <td></td>
+            <td>Відсутні</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

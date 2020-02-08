@@ -9,7 +9,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text">Пацієнт</span>
         </div>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control" (keyup)="onSearch($event)">
       </div>
     </div>
     <div class="col-md-9">
@@ -33,7 +33,7 @@
   <div class="row">
     <div class="col-md-12">
       <ol>
-        <li *ngFor="let patient of patientList; let i = index;">
+        <li *ngFor="let patient of patients; let i = index;">
           <!-- [routerLink]="['/patient-details', patient.id]" -->
           <a (click)="onGetPatientInfo(patient.id)">{{patient.lastName}} {{patient.firstName}} {{patient.middleName}}</a>
           <span (click)="onDeletePatient(patient.id, i)"><img src="/assets/images/remove-icon.svg" alt="delete patient"></span>

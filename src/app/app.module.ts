@@ -11,6 +11,10 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { PatientListComponent } from './components/patient-list/patient-list.component';
 import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
 import { UserService } from './services/user.service';
+import { ChildInfoComponent } from './components/child-info/child-info.component';
+import { AuthGuard } from './services/auth-guard.service';
+import { PatientLoginComponent } from './components/patient-login/patient-login.component';
+import { PatientPreviewComponent } from './components/patient-preview/patient-preview.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,10 @@ import { UserService } from './services/user.service';
     LoginComponent,
     RegistrationComponent,
     PatientListComponent,
-    PatientDetailsComponent
+    PatientDetailsComponent,
+    ChildInfoComponent,
+    PatientLoginComponent,
+    PatientPreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +35,7 @@ import { UserService } from './services/user.service';
     ReactiveFormsModule,
     NgbModule
   ],
-  providers: [UserService],
+  providers: [UserService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

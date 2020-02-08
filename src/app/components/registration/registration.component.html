@@ -23,9 +23,10 @@
           <label>Прізвище:</label>
         </div>
         <div class="col-md-4">
-          <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
-          <div *ngIf="registerForm.controls['lastName'].invalid && registerForm.controls['lastName'].touched" class="invalid-feedback">
-            <div>Last Name is required</div>
+          <input type="text" formControlName="lastName" class="form-control" />
+          <div class="alert alert-danger"
+            *ngIf="registerForm.controls['lastName'].invalid && registerForm.controls['lastName'].touched">
+            Це поле обов'язкове
           </div>
         </div>
       </div>
@@ -34,9 +35,10 @@
           <label>Ім'я:</label>
         </div>
         <div class="col-md-4">
-          <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
-          <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-            <div *ngIf="f.firstName.errors.required">First Name is required</div>
+          <input type="text" formControlName="firstName" class="form-control"/>
+          <div class="alert alert-danger"
+            *ngIf="registerForm.controls['firstName'].invalid && registerForm.controls['firstName'].touched">
+            Це поле обов'язкове
           </div>
         </div>
       </div>
@@ -45,9 +47,10 @@
           <label>По-батькові:</label>
         </div>
         <div class="col-md-4">
-          <input type="text" formControlName="middleName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
-          <div *ngIf="submitted && f.middleName.errors" class="invalid-feedback">
-              <div *ngIf="f.middleName.errors.required">Middle Name is required</div>
+          <input type="text" formControlName="middleName" class="form-control"/>
+          <div class="alert alert-danger"
+            *ngIf="registerForm.controls['middleName'].invalid && registerForm.controls['middleName'].touched">
+            Це поле обов'язкове
           </div>
         </div>
       </div>
@@ -56,10 +59,10 @@
           <label>Email:</label>
         </div>
         <div class="col-md-4">
-          <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-              <div *ngIf="f.email.errors.required">Email is required</div>
-              <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+          <input type="text" formControlName="email" class="form-control" />
+          <div class="alert alert-danger"
+            *ngIf="registerForm.controls['email'].email && registerForm.controls['email'].touched">
+            Це поле обов'язкове
           </div>
         </div>
       </div>
@@ -68,10 +71,10 @@
           <label>Пароль:</label>
         </div>
         <div class="col-md-4">
-          <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-            <div *ngIf="f.password.errors.required">Password is required</div>
-            <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+          <input type="password" formControlName="password" class="form-control" />
+          <div class="alert alert-danger"
+            *ngIf="registerForm.controls['password'].email && registerForm.controls['password'].touched">
+            Це поле обов'язкове
           </div>
         </div>
       </div>
@@ -80,10 +83,10 @@
           <label>Підтвердити пароль:</label>
         </div>
         <div class="col-md-4">
-            <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
-            <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
-                <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
-                <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+            <input type="password" formControlName="confirmPassword" class="form-control" />
+            <div class="alert alert-danger"
+              *ngIf="registerForm.controls['confirmPassword'].email && registerForm.controls['confirmPassword'].touched">
+              Це поле обов'язкове
             </div>
           <br>
           <a routerLink="/login">Увійти</a>

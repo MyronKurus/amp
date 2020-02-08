@@ -1,16 +1,16 @@
 <div class="container">
-  <h1>Увійти</h1>
+  <h1>Увійти як пацієнт</h1>
   <form [formGroup]="myForm" novalidate (ngSubmit)="submit()">
     <div class="form-group">
       <div class="row">
         <div class="col-md-2 offset-md-3">
-          <label>Email:</label>
+          <label>Ключ:</label>
         </div>
         <div class="col-md-4">
           <input class="form-control" name="email" formControlName="userEmail" />
           <div class="alert alert-danger"
             *ngIf="myForm.controls['userEmail'].invalid && myForm.controls['userEmail'].touched">
-            Неправильний email
+            Це обов'язкове поле
           </div>
         </div>
       </div>
@@ -19,14 +19,13 @@
           <label>Пароль:</label>
         </div>
         <div class="col-md-4">
-          <input class="form-control" type="password" name="password" formControlName="userPassword" />
-          <div class="alert alert-danger"
-            *ngIf="myForm.controls['userEmail'].invalid && myForm.controls['userEmail'].touched">
-            Неправильний пароль
+          <input class="form-control" type="password" name="userPassword" formControlName="userPassword" />
+            <div class="alert alert-danger"
+            *ngIf="myForm.controls['userPassword'].invalid && myForm.controls['userPassword'].touched">
+            Це обов'язкове поле
           </div>
           <br>
-          <a routerLink="/registration" >Зареєструватися</a>
-          <a routerLink="/patient-login" style="float: right">Вхід для пацієнта</a>
+          <a routerLink="/login">Вхід для лікаря</a>
         </div>
       </div>
     </div>

@@ -9,6 +9,8 @@ export class UserService {
   private authToken: string;
   private doctor: any;
   private patient: any;
+  private child: any;
+  private authenticated = false;
 
   constructor(private http: HttpClient) { }
 
@@ -30,6 +32,18 @@ export class UserService {
 
   public getPatient() {
     return this.patient;
+  }
+
+  public setChild(child: any) {
+    this.child = child;
+  }
+
+  public getChild() {
+    return this.child;
+  }
+
+  public isAuthenticated() {
+    return this.authToken != null;
   }
 
   public getContentTypeHeaders() {
