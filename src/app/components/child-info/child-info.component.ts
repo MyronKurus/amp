@@ -38,7 +38,7 @@ export class ChildInfoComponent implements OnInit {
     const childData = { data: {...this.child} };
     // this.patient.children.array.forEach(element => {
     //   if (element.firstName === this.child.firstname) {
-    //     console.log('bingo');
+    //
     //   }
     // });
     this.userService.editPatient(this.child.id, childData)
@@ -47,10 +47,7 @@ export class ChildInfoComponent implements OnInit {
 
   onDeletePatient() {
     this.userService.deletePatient(this.patient.user.id)
-      .subscribe(data => {
-        console.log(data);
-        this.router.navigate(['patient-list']);
-      });
+      .subscribe(() => this.router.navigate(['patient-list']));
   }
 
   onLogOut() {

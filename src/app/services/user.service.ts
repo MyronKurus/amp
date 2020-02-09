@@ -67,10 +67,7 @@ export class UserService {
   public getUserMe() {
     const headers = this.getAuthHeaders();
     return this.http.get(`${environment.appUrl}/User/Me`, {headers})
-      .pipe(tap((user: any) => {
-        this.doctor = user.item;
-        console.log(this.doctor);
-      }));
+      .pipe(tap((user: any) => this.doctor = user.item));
   }
 
   public getAllUsersList() {

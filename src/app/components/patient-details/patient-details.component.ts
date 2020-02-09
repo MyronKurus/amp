@@ -55,7 +55,6 @@ export class PatientDetailsComponent implements OnInit {
   ngOnInit() {
     this.patient = this.userService.getPatient();
     this.doctor = this.userService.getDoctor();
-    console.log(this.patient);
     this.patientDetailsForm = this.fb.group({
       height: [''],
       weight: [''],
@@ -100,17 +99,14 @@ export class PatientDetailsComponent implements OnInit {
     this.editMode = false;
     const userData = { data: {...this.patient.user} };
     this.userService.editPatient(this.patient.user.id, userData)
-      .subscribe(res => console.log(res));
+      .subscribe();
   }
 
   onDeletePatient() {
     const result = confirm('Ви справді хочете видалити пацієнта?');
     if (result) {
       this.userService.deletePatient(this.patient.user.id)
-        .subscribe(data => {
-          console.log(data);
-          this.router.navigate(['patient-list']);
-        });
+        .subscribe(() => this.router.navigate(['patient-list']));
     }
   }
 
@@ -186,8 +182,7 @@ export class PatientDetailsComponent implements OnInit {
     };
 
     this.userService.addAssignedMedication(medication)
-      .subscribe((data: any) => console.log(data));
-    // console.log(medication);
+      .subscribe((data: any) => this.patient.medicines.push(data.item));
   }
 
   openAnamnesisModal(targetModal, anamnesis) {

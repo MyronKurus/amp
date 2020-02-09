@@ -40,8 +40,6 @@ export class PatientListComponent implements OnInit {
   ngOnInit() {
     this.doctor = this.userService.getDoctor();
     this.onGetPatientList();
-    this.userService.getAllUsersList()
-      .subscribe(data => console.log(data));
     this.addHinekologyPatientForm = this.fb.group({
       firstName: [''],
       lastName: [''],
@@ -88,13 +86,13 @@ export class PatientListComponent implements OnInit {
         middleName: patient.middleName,
         birthDate: new Date(patient.dateOfBirth.year, (+patient.dateOfBirth.month) - 1, patient.dateOfBirth.day),
         role: 3,
-        doctorId: 11
+        doctorId: this.doctor.id
       }
     };
 
     this.userService.register(patientData)
       .subscribe((data: any) => {
-        this.patientList.push(data.item);
+        // this.patientList.push(data.item);
         this.patients.push(data.item);
       });
   }
@@ -148,7 +146,7 @@ export class PatientListComponent implements OnInit {
       this.patientList.splice(index, 1);
       this.patients.splice(index, 1);
       this.userService.deletePatient(id)
-        .subscribe(data => console.log(data));
+        .subscribe();
     }
   }
 
