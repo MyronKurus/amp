@@ -60,11 +60,14 @@ export class PatientDetailsComponent implements OnInit {
   }
 
   onDeletePatient() {
-    this.userService.deletePatient(this.patient.user.id)
-      .subscribe(data => {
-        console.log(data);
-        this.router.navigate(['patient-list']);
-      });
+    const result = confirm('Ви справді хочете видалити пацієнта?');
+    if (result) {
+      this.userService.deletePatient(this.patient.user.id)
+        .subscribe(data => {
+          console.log(data);
+          this.router.navigate(['patient-list']);
+        });
+    }
   }
 
   openChildrenModal(targetModal, user) {

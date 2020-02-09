@@ -22,21 +22,14 @@
               *ngIf="doctor.role === 'Familydoctor'"
               (click)="openFamilyModal(addFamilyPatientModal, familyUser)">Додати нового пацієнта</button>
     </div>
-    <!-- <div class="col-md-9 offset-md-3">
-      <button class="btn btn-primary" (click)="onGetPatientList()" style="float: right">onGetPatientList</button>
-      <button class="btn btn-primary" (click)="onDeletePatient()" style="float: right">onDeletePatient</button>
-      <button class="btn btn-primary" (click)="onAddFamilyDoc()" style="float: right">onAddFamilyDoc</button>
-      <button class="btn btn-primary" (click)="onGetFamilyPatients()" style="float: right">onGetFamilyPatients</button>
-    </div> -->
   </div>
 
   <div class="row">
     <div class="col-md-12">
       <ol>
         <li *ngFor="let patient of patients; let i = index;">
-          <!-- [routerLink]="['/patient-details', patient.id]" -->
           <a (click)="onGetPatientInfo(patient.id)">{{patient.lastName}} {{patient.firstName}} {{patient.middleName}}</a>
-          <span (click)="onDeletePatient(patient.id, i)"><img src="/assets/images/remove-icon.svg" alt="delete patient"></span>
+          <button type="button" class="btn btn-danger" (click)="onDeletePatient(patient.id, i)" style="float: right">Видалити</button>
         </li>
       </ol>
     </div>

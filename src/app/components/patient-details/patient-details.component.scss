@@ -42,3 +42,11 @@ a:not([href]) {
     text-decoration: underline;
   }
 }
+
+.personal-data,
+.children-data,
+.medicines,
+.anamnesis,
+.serology {
+  margin-top: 40px;
+}
