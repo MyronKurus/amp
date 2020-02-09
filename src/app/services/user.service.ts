@@ -113,4 +113,14 @@ export class UserService {
     return this.http.post(`${environment.appUrl}/User/${id}/child`, data, {headers});
   }
 
+  public addAssignedMedication(data) {
+    const headers = this.getAuthHeaders();
+    return this.http.post(`${environment.appUrl}/AssignedMedication`, data, {headers});
+  }
+
+  public addAssignedMedicationAnamnesis(data) {
+    const headers = this.getAuthHeaders();
+    return this.http.post(`${environment.appUrl}/AssignedMedication/anamnes`, data, {headers});
+  }
+
 }

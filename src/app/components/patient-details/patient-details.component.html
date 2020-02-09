@@ -91,16 +91,18 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <tr *ngFor="let country of countries; index as i">
-            <th scope="row">{{ i + 1 }}</th>
-               <td>
-                <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
-                {{ country.name }}
-              </td>
-              <td>{{ country.area | number }}</td>
-              <td>{{ country.population | number }}</td>
-          </tr> -->
-          <tr>
+          <tr *ngFor="let medicine of patient.medicines; index as i">
+            <td>{{i + 1}}</td>
+            <td>{{medicine.date | date: 'd.MM.yyyy' }}</td>
+            <td>{{medicine.medicationName}}</td>
+            <td>{{medicine.internetialMedicationName}}</td>
+            <td>{{medicine.dose}}</td>
+            <td>{{medicine.inputMethod}}</td>
+            <td>{{medicine.periodOfUsing}}</td>
+            <td>{{medicine.indication}}</td>
+            <td>{{medicine.effects}}</td>
+          </tr>
+          <!-- <tr>
               <td>1</td>
               <td>01.12.2018</td>
               <td>Лазолван</td>
@@ -110,9 +112,15 @@
               <td>3 дні</td>
               <td></td>
               <td>Відсутні</td>
-            </tr>
+            </tr> -->
         </tbody>
       </table>
+      <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="openMedicineModal(addMedicineModal, medicine)"
+              style="float: right"
+              *ngIf="doctor.role === 'Gynecologist' && editMode">Додати препарат</button>
     </div>
   </div>
   <div class="row anamnesis">
@@ -148,83 +156,227 @@
       <!-- </tr> -->
       </tbody>
     </table>
+    <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="openAnamnesisModal(addAnamnesisModal, anamnesis)"
+          style="float: right"
+          *ngIf="doctor.role === 'Gynecologist' && editMode">Додати запис</button>
+      </div>
+    </div>
+    <div class="row serology">
+        <div class="col-md-12">
+        <h3>4.Результати серологічних досліджень крові вагітної</h3>
+        <p>Персоніфікований перелік ЛЗ, які потенційно небезпечні щодо розвитку алергійних реакцій у вагітної та новонародженого. Оцінка вмісту в сироватці специфічних IgE до конкретних ЛЗ</p>
+        <table class="table table-striped col-md-7">
+          <thead>
+          <tr>
+            <th scope="col">МО/мл визначена концентрація</th>
+            <th scope="col">EAST-клас</th>
+            <th scope="col"> Оцінка вмісту в сироватці
+                амоксицилін-специфічних IgE</th>
+          </tr>
+          </thead>
+          <tbody>
+           <tr *ngFor="let country of countries; index as i">
+            <th scope="row">{{ i + 1 }}</th> -->
+            <td>
+              <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
+              {{ country.name }}
+            </td>
+            <td>{{ country.area | number }}</td> -->
+          </tr>
+          <tr>
+              <td>0,00-0,34</td>
+              <td>0</td>
+              <td>Дещо  підвищений</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-  <div class="row serology">
-    <div class="col-md-12">
-    <h3>4.Результати серологічних досліджень крові вагітної</h3>
-    <p>Персоніфікований перелік ЛЗ, які потенційно небезпечні щодо розвитку алергійних реакцій у вагітної та новонародженого. Оцінка вмісту в сироватці специфічних IgE до конкретних ЛЗ</p>
-    <table class="table table-striped col-md-7">
-      <thead>
-      <tr>
-        <th scope="col">МО/мл визначена концентрація</th>
-        <th scope="col">EAST-клас</th>
-        <th scope="col"> Оцінка вмісту в сироватці
-            амоксицилін-специфічних IgE</th>
-      </tr>
-      </thead>
-      <tbody>
-      <!-- <tr *ngFor="let country of countries; index as i">
-        <th scope="row">{{ i + 1 }}</th> -->
-        <!-- <td>
-          <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
-          {{ country.name }}
-        </td>
-        <td>{{ country.area | number }}</td> -->
-      <!-- </tr> -->
-      <tr>
-          <td>0,00-0,34</td>
-          <td>0</td>
-          <td>Дещо  підвищений</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  </div>
-</div>
 
 
 <ng-template #addChildModal let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="addPatientLabel">Додати нового пацієнта</h4>
-      <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
+  <div class="modal-header">
+    <h4 class="modal-title" id="addPatientLabel">Додати нового пацієнта</h4>
+    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 
-    <div class="modal-body">
-      <form [formGroup]="childrenForm" (ngSubmit)="onAddChildSubmit()">
-        <div class="form-group row">
-          <label for="lastName" class="col-sm-4 col-form-label">Прізвище</label>
+  <div class="modal-body">
+    <form [formGroup]="childrenForm" (ngSubmit)="onAddChildSubmit()">
+      <div class="form-group row">
+        <label for="lastName" class="col-sm-4 col-form-label">Прізвище</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="lastName" id="lastName" >
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="firstName" class="col-sm-4 col-form-label">Ім'я</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="firstName" id="firstName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="middleName" class="col-sm-4 col-form-label">По-батькові</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="middleName" id="middleName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="input-group">
+          <label for="dateOfBirth" class="col-sm-4 col-form-label">Дата народження</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" formControlName="lastName" id="lastName" >
+            <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  id="dateOfBirth"
+                  (click)="d.toggle()"
+                  name="dp"
+                  [formControl]="childrenForm.controls.dateOfBirth"
+                  ngbDatepicker #d="ngbDatepicker" #spy>
           </div>
         </div>
-        <div class="form-group row">
-          <label for="firstName" class="col-sm-4 col-form-label">Ім'я</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" formControlName="firstName" id="firstName">
-          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Відмінити</button>
+        <button type="submit" class="btn btn-primary" [disabled]="childrenForm.invalid">Зберегти</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #addMedicineModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="addMedicineLabel">Додати нового пацієнта</h4>
+    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="addMedicineForm" (ngSubmit)="onAddMedicineSubmit()">
+
+      <div class="form-group row">
+        <label for="date" class="col-sm-4 col-form-label">Дата застосування</label>
+        <div class="col-sm-8">
+          <input  class="form-control" placeholder="yyyy-mm-dd" id="date" (click)="d.toggle()"
+                    name="dp" [formControl]="addMedicineForm.controls.date"
+                    [minDate]="{year: 2000, month: 1, day: 1}"
+                    [maxDate]="{year: 2025, month: 12, day: 31}"
+                    ngbDatepicker #d="ngbDatepicker" #spy>
         </div>
-        <div class="form-group row">
-          <label for="middleName" class="col-sm-4 col-form-label">По-батькові</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" formControlName="middleName" id="middleName">
-          </div>
+      </div>
+      <div class="form-group row">
+        <label for="medicationName" class="col-sm-4 col-form-label">ЛЗ (торгова назва)</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="medicationName" id="medicationName">
         </div>
-        <div class="form-group row">
-          <div class="input-group">
-            <label for="dateOfBirth" class="col-sm-4 col-form-label">Дата народження</label>
-            <div class="col-sm-8">
-              <input  class="form-control" placeholder="yyyy-mm-dd" id="dateOfBirth" (click)="d.toggle()"
-                      name="dp" [formControl]="childrenForm.controls.dateOfBirth" ngbDatepicker #d="ngbDatepicker" #spy>
-              </div>
-          </div>
+      </div>
+      <div class="form-group row">
+        <label for="internetialMedicationName" class="col-sm-4 col-form-label">Міжнародна назва ЛЗ</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="internetialMedicationName" id="internetialMedicationName">
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Відмінити</button>
-          <button type="submit" class="btn btn-primary" [disabled]="childrenForm.invalid">Зберегти</button>
+      </div>
+      <div class="form-group row">
+        <label for="dose" class="col-sm-4 col-form-label">Добова доза</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="dose" id="dose" >
         </div>
-      </form>
-    </div>
-  </ng-template>
+      </div>
+      <div class="form-group row">
+        <label for="inputMethod" class="col-sm-4 col-form-label">Спосіб введення</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="inputMethod" id="inputMethod">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="periodOfUsing" class="col-sm-4 col-form-label">Тривалість застосування</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="periodOfUsing" id="periodOfUsing">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="indication" class="col-sm-4 col-form-label">Показання</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="indication" id="indication" >
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="effects" class="col-sm-4 col-form-label">Побічні реакції</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="effects" id="effects">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Відмінити</button>
+        <button type="submit" class="btn btn-primary" [disabled]="addMedicineForm.invalid">Зберегти</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #addAnamnesisModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="addMedicineLabel">Додати результату анамнезу</h4>
+    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="addAnamnesisForm" (ngSubmit)="onAnamnesisSubmit()">
+      <div class="form-group row">
+        <label for="medicationName" class="col-sm-4 col-form-label">ЛЗ (торгова назва)</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="medicationName" id="medicationName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="internetialMedicationName" class="col-sm-4 col-form-label">Міжнародна назва ЛЗ</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="internetialMedicationName" id="internetialMedicationName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="dose" class="col-sm-4 col-form-label">Добова доза</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="dose" id="dose" >
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputMethod" class="col-sm-4 col-form-label">Спосіб введення</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="inputMethod" id="inputMethod">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="adverseReactions" class="col-sm-4 col-form-label">Прояви, що спостерігалися</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="adverseReactions" id="adverseReactions">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="periodsOfEffects" class="col-sm-4 col-form-label">Тривалість проявів</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="periodsOfEffects" id="periodsOfEffects" >
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="appliedActivities" class="col-sm-4 col-form-label">Проведені заходи</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="appliedActivities" id="appliedActivities">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Відмінити</button>
+        <button type="submit" class="btn btn-primary" >Зберегти</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
