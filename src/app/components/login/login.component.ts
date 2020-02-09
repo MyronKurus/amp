@@ -12,6 +12,9 @@ import { switchMap, tap } from 'rxjs/operators';
 export class LoginComponent implements OnInit {
 
   myForm: FormGroup;
+  error = false;
+  errors: any[];
+
   constructor(private userService: UserService, private router: Router) {
     this.myForm = new FormGroup({
       'userEmail': new FormControl('', [ Validators.required, Validators.email ]),
@@ -33,7 +36,10 @@ export class LoginComponent implements OnInit {
         switchMap(() => this.userService.getUserMe()))
         .subscribe(() => {
           this.router.navigate(['patient-list']);
-        }, (error) => { console.log(error); });
+        }, (err) => {
+          this.error = true;
+          this.errors = err.error.errors;
+         });
   }
 
   ngOnInit() {

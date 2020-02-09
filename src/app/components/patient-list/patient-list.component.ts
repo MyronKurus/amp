@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-patient-list',
@@ -85,7 +86,7 @@ export class PatientListComponent implements OnInit {
         firstName: patient.firstName,
         lastName: patient.lastName,
         middleName: patient.middleName,
-        birthDate: '1998-02-06T18:07:51.857Z',
+        birthDate: new Date(patient.dateOfBirth.year, (+patient.dateOfBirth.month) - 1, patient.dateOfBirth.day),
         role: 3,
         doctorId: 11
       }
@@ -149,6 +150,11 @@ export class PatientListComponent implements OnInit {
       this.userService.deletePatient(id)
         .subscribe(data => console.log(data));
     }
+  }
+
+  onLogOut() {
+    this.userService.setToken(null);
+    this.router.navigate(['/login']);
   }
 }
 

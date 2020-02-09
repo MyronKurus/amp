@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-patient-preview',
@@ -10,11 +11,16 @@ export class PatientPreviewComponent implements OnInit {
 
   patient: any;
 
-  constructor(private userServise: UserService) { }
+  constructor(private userServise: UserService, private router: Router) { }
 
   ngOnInit() {
     this.patient = this.userServise.getPatient();
     console.log(this.patient);
+  }
+
+  onLogOut() {
+    this.userServise.setToken(null);
+    this.router.navigate(['/login']);
   }
 
 }

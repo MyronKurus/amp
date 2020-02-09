@@ -109,4 +109,9 @@ export class PatientDetailsComponent implements OnInit {
     this.router.navigate(['child-info']);
   }
 
+  onLogOut() {
+    this.userService.setToken(null);
+    this.router.navigate(['/login']);
+  }
+
 }

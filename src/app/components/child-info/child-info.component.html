@@ -2,11 +2,14 @@
   <div class="row child-info">
     <div class="col-md-2">
       <h4>{{child.lastName}} {{child.firstName}}</h4>
-        <p>{{child.birthDate | date: 'd.mm.yyyy'}}</p>
+        <p>{{child.birthDate | date: 'd.MM.yyyy'}}</p>
       </div>
       <div class="col-md-4 offset-md-6">
         <h5>Мати</h5>
         <p><a [routerLink]="['/patient-details']">{{patient.user.lastName}} {{patient.user.firstName}}</a></p>
+        <button class="btn btn-success"
+          style="float: right"
+          (click)="onLogOut()">Вийти</button>
       </div>
   </div>
   <hr>

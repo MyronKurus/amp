@@ -2,11 +2,14 @@
   <div class="row user-info">
     <div class="col-md-4">
       <h4>{{patient.user.lastName}} {{patient.user.firstName}} {{patient.user.middleName}}</h4>
-      <p>{{patient.user.birthDate | date: 'd.mm.yyyy'}}</p>
+      <p>{{patient.user.birthDate | date: 'd.MM.yyyy'}}</p>
     </div>
     <div class="col-md-8">
       <p>Personal key: {{patient.user.personalKey}}</p>
       <p>Password: {{patient.user.patientPass}}</p>
+      <button class="btn btn-success"
+        style="float: right"
+        (click)="onLogOut()">Вийти</button>
     </div>
     <a [routerLink]="['/patient-list']">Повернутися до списку пацієнтів</a>
   </div>
@@ -65,7 +68,7 @@
       </ol>
     </div>
     <div class="col-md-8">
-      <button type="button" class="btn btn-primary" (click)="openChildrenModal(addHinecologPatientModal, child)" style="float: right">Додати дитину</button>
+      <button type="button" class="btn btn-primary" (click)="openChildrenModal(addChildModal, child)" style="float: right">Додати дитину</button>
     </div>
   </div>
   <div class="row medicines">
@@ -181,7 +184,7 @@
 </div>
 
 
-<ng-template #addHinecologPatientModal let-modal>
+<ng-template #addChildModal let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="addPatientLabel">Додати нового пацієнта</h4>
       <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
@@ -220,7 +223,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Відмінити</button>
-          <button type="submit" class="btn btn-primary">Зберегти</button>
+          <button type="submit" class="btn btn-primary" [disabled]="childrenForm.invalid">Зберегти</button>
         </div>
       </form>
     </div>

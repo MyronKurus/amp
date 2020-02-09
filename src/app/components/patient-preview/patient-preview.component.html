@@ -2,11 +2,14 @@
   <div class="row user-info">
     <div class="col-md-4">
       <h4>{{patient.user.user.lastName}} {{patient.user.user.firstName}} {{patient.user.user.middleName}}</h4>
-      <p>{{patient.user.user.birthDate | date: 'd.mm.yyyy'}}</p>
+      <p>{{patient.user.user.birthDate | date: 'd.MM.yyyy'}}</p>
     </div>
     <div class="col-md-8">
       <p>Personal key: {{patient.user.user.personalKey}}</p>
       <p>Password: {{patient.user.user.patientPass}}</p>
+      <button class="btn btn-success"
+        style="float: right"
+        (click)="onLogOut()">Вийти</button>
     </div>
   </div>
   <hr>

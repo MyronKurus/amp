@@ -10,8 +10,12 @@ import { MustMatch } from '../../helpers/must-match';
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent implements OnInit {
+
   submitted = false;
   registerForm: FormGroup;
+  error = false;
+  errors: any[];
+
   constructor(private formBuilder: FormBuilder, private user: UserService, private router: Router) {
     this.registerForm = this.formBuilder.group({
       role: ['', Validators.required ],
@@ -44,7 +48,10 @@ export class RegistrationComponent implements OnInit {
     this.user.register(formData)
       .subscribe((data) => {
         this.router.navigate(['/login']);
-      }, (error) => { console.log(error); });
+      }, (err) => {
+        this.error = true;
+        this.errors = err.error.errors;
+      });
   }
 
   ngOnInit() {

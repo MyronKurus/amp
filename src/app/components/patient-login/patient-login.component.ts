@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 export class PatientLoginComponent implements OnInit {
 
   myForm: FormGroup;
+  error = false;
+  errors: any[];
+
   constructor(private userService: UserService, private router: Router) {
     this.myForm = new FormGroup({
       'userEmail': new FormControl('', [ Validators.required]),
@@ -30,6 +33,9 @@ export class PatientLoginComponent implements OnInit {
       .subscribe((data: any) => {
         this.userService.setPatient(data.item);
         this.router.navigate(['/patient-preview']);
+      }, (err) => {
+        this.error = true;
+        this.errors = err.error.errors;
       });
   }
 

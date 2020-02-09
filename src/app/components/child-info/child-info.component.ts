@@ -53,4 +53,9 @@ export class ChildInfoComponent implements OnInit {
       });
   }
 
+  onLogOut() {
+    this.userService.setToken(null);
+    this.router.navigate(['/login']);
+  }
+
 }

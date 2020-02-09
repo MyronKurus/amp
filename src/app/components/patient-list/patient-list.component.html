@@ -1,10 +1,16 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-2 offset-md-10"><h5 *ngIf="doctor.firstName">Вітаю, {{doctor.firstName}}</h5></div>
+    <div class="col-md-4 offset-md-8">
+      <h5 *ngIf="doctor.firstName" >Вітаю, {{doctor.firstName}}
+          <button class="btn btn-success"
+          style="float: right"
+          (click)="onLogOut()">Вийти</button>
+      </h5>
+    </div>
   </div>
   <h1>Список пацієнтів</h1>
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-5">
       <div class="input-group">
         <div class="input-group-prepend">
           <span class="input-group-text">Пошук</span>
@@ -12,7 +18,7 @@
         <input type="text" class="form-control" (keyup)="onSearch($event)" placeholder="Прізвище пацієнта">
       </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-7">
       <button class="btn btn-primary"
               style="float: right"
               *ngIf="doctor.role === 'Gynecologist'"
@@ -28,7 +34,7 @@
     <div class="col-md-12">
       <ol>
         <li *ngFor="let patient of patients; let i = index;">
-          <a (click)="onGetPatientInfo(patient.id)">{{patient.lastName}} {{patient.firstName}} {{patient.middleName}}</a>
+          <a (click)="onGetPatientInfo(patient.id)">{{patient.lastName}} {{patient.firstName}} {{patient.middleName}} - {{patient.birthDate  | date: 'd.MM.yyyy'}}</a>
           <button type="button" class="btn btn-danger" (click)="onDeletePatient(patient.id, i)" style="float: right">Видалити</button>
         </li>
       </ol>
@@ -69,13 +75,16 @@
           <label for="dateOfBirth" class="col-sm-4 col-form-label">Дата народження</label>
           <div class="col-sm-8">
             <input  class="form-control" placeholder="yyyy-mm-dd" id="dateOfBirth" (click)="d.toggle()"
-                    name="dp" [formControl]="addHinekologyPatientForm.controls.dateOfBirth" ngbDatepicker #d="ngbDatepicker" #spy>
+                    name="dp" [formControl]="addHinekologyPatientForm.controls.dateOfBirth"
+                    [minDate]="{year: 1960, month: 1, day: 1}"
+                    [maxDate]="{year: 2020, month: 12, day: 31}"
+                    ngbDatepicker #d="ngbDatepicker" #spy>
             </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Відмінити</button>
-        <button type="submit" class="btn btn-primary">Зберегти</button>
+        <button type="submit" class="btn btn-primary" [disabled]="addHinekologyPatientForm.invalid">Зберегти</button>
       </div>
     </form>
   </div>
@@ -106,7 +115,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Відмінити</button>
-        <button type="submit" class="btn btn-primary">Зберегти</button>
+        <button type="submit" class="btn btn-primary" [disabled]="addFamilyPatientForm.invalid">Зберегти</button>
       </div>
     </form>
   </div>
