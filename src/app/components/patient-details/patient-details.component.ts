@@ -136,12 +136,13 @@ export class PatientDetailsComponent implements OnInit {
         firstName: child.firstName,
         lastName: child.lastName,
         middleName: child.middleName,
-        birthDate: '2018-02-08T18:08:21.335Z'
+        birthDate: new Date(child.dateOfBirth.year, (+child.dateOfBirth.month) - 1, child.dateOfBirth.day),
+        role: 4
       }
     };
 
     this.userService.addChild(patientData, this.patient.user.id)
-      .subscribe((data: any) => this.patient.children.push(data.item));
+      .subscribe((data: any) => this.patient.children.push(data.item.user));
   }
 
   openMedicineModal(targetModal, medicine) {
@@ -217,9 +218,20 @@ export class PatientDetailsComponent implements OnInit {
       .subscribe((data: any) => console.log(data));
   }
 
-  setChild(index) {
-    this.userService.setChild(this.patient.children[index]);
-    this.router.navigate(['child-info']);
+  setChild(id) {
+    this.userService.getPatientById(id)
+    .subscribe((data: any) => {
+      this.userService.setChild(data.item);
+      this.router.navigate(['child-info']);
+    });
+  }
+
+  onGetPatientInfo(patientId) {
+    this.userService.getPatientById(patientId)
+      .subscribe((data: any) => {
+        this.userService.setPatient(data.item);
+        this.router.navigate(['patient-details']);
+      });
   }
 
   onLogOut() {
