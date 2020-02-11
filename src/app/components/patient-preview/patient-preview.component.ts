@@ -15,6 +15,7 @@ export class PatientPreviewComponent implements OnInit {
 
   ngOnInit() {
     this.patient = this.userServise.getPatient();
+    console.log(this.patient);
   }
 
   onLogOut() {

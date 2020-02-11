@@ -1,15 +1,25 @@
 <div class="container">
+  <div class="row" style="margin-top: 40px">
+    <div class="col-md-8">
+      <a [routerLink]="['/patient-list']">Повернутися до списку пацієнтів</a>
+    </div>
+    <div class="col-md-4" style="padding-left: 0">
+      <h5 *ngIf="doctor.firstName" >Вітаю, {{doctor.firstName}}!
+        <button class="btn btn-success"
+                  style="float: right"
+                  (click)="onLogOut()">Вийти</button>
+      </h5>
+    </div>
+  </div>
+  <hr>
   <div class="row child-info">
-    <div class="col-md-2">
+    <div class="col-md-8" style="padding-left: 0">
       <h4>{{child.user.lastName}} {{child.user.firstName}}</h4>
         <p>{{child.user.birthDate | date: 'd.MM.yyyy'}}</p>
       </div>
-      <div class="col-md-4 offset-md-6">
+      <div class="col-md-4">
         <h5>Мати</h5>
         <p><a [routerLink]="['/patient-details']">{{patient.user.lastName}} {{patient.user.firstName}}</a></p>
-        <button class="btn btn-success"
-          style="float: right"
-          (click)="onLogOut()">Вийти</button>
       </div>
   </div>
   <hr>
@@ -21,7 +31,7 @@
     <div class="col-md-2">
       <p>Зріст:</p>
       <p>Вага:</p>
-      <p>Вік, років:</p>
+      <!-- <p>Вік, років:</p> -->
     </div>
     <div class="col-md-2" *ngIf="!editMode">
       <p><span *ngIf="child.user.height">{{child.user.height}}, см</span></p>
@@ -78,17 +88,6 @@
             <td>{{medicine.indication}}</td>
             <td>{{medicine.effects}}</td>
           </tr>
-          <!-- <tr>
-              <td>1</td>
-              <td>01.12.2018</td>
-              <td>Лазолван</td>
-              <td></td>
-              <td>0,5мг</td>
-              <td>Каплі</td>
-              <td>3 дні</td>
-              <td></td>
-              <td>Відсутні</td>
-            </tr> -->
         </tbody>
       </table>
       <button

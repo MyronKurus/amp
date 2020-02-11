@@ -50,3 +50,11 @@ a:not([href]) {
 .serology {
   margin-top: 40px;
 }
+
+.user-info {
+  span {
+    text-decoration: underline;
+    font-style: italic;
+    font-weight: bold;
+  }
+}

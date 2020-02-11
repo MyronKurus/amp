@@ -1,4 +1,14 @@
 <div class="container">
+  <div class="row" style="margin-top: 40px">
+    <div class="col-md-4 offset-md-8">
+      <h5 *ngIf="patient.user.user.firstName" >Вітаю, {{patient.user.user.firstName}}!
+        <button class="btn btn-success"
+              style="float: right"
+              (click)="onLogOut()">Вийти</button>
+      </h5>
+    </div>
+  </div>
+  <hr>
   <div class="row user-info">
     <div class="col-md-4">
       <h4>{{patient.user.user.lastName}} {{patient.user.user.firstName}} {{patient.user.user.middleName}}</h4>
@@ -7,9 +17,6 @@
     <div class="col-md-8">
       <p>Personal key: {{patient.user.user.personalKey}}</p>
       <p>Password: {{patient.user.user.patientPass}}</p>
-      <button class="btn btn-success"
-        style="float: right"
-        (click)="onLogOut()">Вийти</button>
     </div>
   </div>
   <hr>
@@ -33,25 +40,16 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <tr *ngFor="let country of countries; index as i">
-            <th scope="row">{{ i + 1 }}</th>
-               <td>
-                <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
-                {{ country.name }}
-              </td>
-              <td>{{ country.area | number }}</td>
-              <td>{{ country.population | number }}</td>
-          </tr> -->
-          <tr>
-            <td>1</td>
-            <td>01.12.2018</td>
-            <td>Лазолван</td>
-            <td></td>
-            <td>0,5мг</td>
-            <td>Каплі</td>
-            <td>3 дні</td>
-            <td></td>
-            <td>Відсутні</td>
+          <tr *ngFor="let medicine of patient.user.medicines; index as i">
+            <td>{{i + 1}}</td>
+            <td>{{medicine.date | date: 'd.MM.yyyy' }}</td>
+            <td>{{medicine.medicationName}}</td>
+            <td>{{medicine.internetialMedicationName}}</td>
+            <td>{{medicine.dose}}</td>
+            <td>{{medicine.inputMethod}}</td>
+            <td>{{medicine.periodOfUsing}}</td>
+            <td>{{medicine.indication}}</td>
+            <td>{{medicine.effects}}</td>
           </tr>
         </tbody>
       </table>
@@ -127,45 +125,36 @@
     </div>
   </div>
   <div class="row kids">
-    <div class="col-md-12" *ngFor="let child of patient.user.children">
-      <h4>{{child.lastName}} {{child.firstName}}</h4>
+    <div class="col-md-12 kid" *ngFor="let child of patient.children">
+      <h4>{{child.user.lastName}} {{child.user.firstName}}</h4>
       <table class="table table-striped">
-          <thead>
-            <tr>
+        <thead>
+          <tr>
             <th scope="col">№</th>
-              <th scope="col">Дата застосування ЛЗ</th>
-              <th scope="col">ЛЗ (торгова назва)</th>
-              <th scope="col">Міжнародна непатентована назва ЛЗ</th>
-              <th scope="col">Добова доза</th>
-              <th scope="col">Спосіб введення</th>
-              <th scope="col">Тривалість застосування</th>
-              <th scope="col">Показання</th>
-              <th scope="col">Побічні реакції</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- <tr *ngFor="let country of countries; index as i">
-              <th scope="row">{{ i + 1 }}</th>
-                 <td>
-                  <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
-                  {{ country.name }}
-                </td>
-                <td>{{ country.area | number }}</td>
-                <td>{{ country.population | number }}</td>
-            </tr> -->
-            <tr>
-              <td>1</td>
-              <td>01.01.2020</td>
-              <td>Вітамін С</td>
-              <td></td>
-              <td>0,5г</td>
-              <td>Каплі</td>
-              <td>2 дні</td>
-              <td></td>
-              <td>Відсутні</td>
-            </tr>
-          </tbody>
-        </table>
+            <th scope="col">Дата застосування ЛЗ</th>
+            <th scope="col">ЛЗ (торгова назва)</th>
+            <th scope="col">Міжнародна непатентована назва ЛЗ</th>
+            <th scope="col">Добова доза</th>
+            <th scope="col">Спосіб введення</th>
+            <th scope="col">Тривалість застосування</th>
+            <th scope="col">Показання</th>
+            <th scope="col">Побічні реакції</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let medicine of child.medicines; index as i">
+            <td>{{i + 1}}</td>
+            <td>{{medicine.date | date: 'd.MM.yyyy' }}</td>
+            <td>{{medicine.medicationName}}</td>
+            <td>{{medicine.internetialMedicationName}}</td>
+            <td>{{medicine.dose}}</td>
+            <td>{{medicine.inputMethod}}</td>
+            <td>{{medicine.periodOfUsing}}</td>
+            <td>{{medicine.indication}}</td>
+            <td>{{medicine.effects}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

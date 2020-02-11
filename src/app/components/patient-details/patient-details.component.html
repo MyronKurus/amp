@@ -1,17 +1,26 @@
 <div class="container">
-  <div class="row user-info">
+  <div class="row" style="margin-top: 40px">
+    <div class="col-md-8">
+      <a [routerLink]="['/patient-list']">Повернутися до списку пацієнтів</a>
+    </div>
     <div class="col-md-4">
+      <h5 *ngIf="doctor.firstName" >Вітаю, {{doctor.firstName}}!
+        <button class="btn btn-success"
+          style="float: right"
+          (click)="onLogOut()">Вийти</button>
+      </h5>
+    </div>
+  </div>
+  <hr>
+  <div class="row user-info">
+    <div class="col-md-4" style="padding: 0">
       <h4>{{patient.user.lastName}} {{patient.user.firstName}} {{patient.user.middleName}}</h4>
       <p>{{patient.user.birthDate | date: 'd.MM.yyyy'}}</p>
     </div>
-    <div class="col-md-8">
-      <p>Personal key: {{patient.user.personalKey}}</p>
-      <p>Password: {{patient.user.patientPass}}</p>
-      <button class="btn btn-success"
-        style="float: right"
-        (click)="onLogOut()">Вийти</button>
+    <div class="col-md-8" style="padding-right: 0">
+      <p><span>Personal key:</span> {{patient.user.personalKey}}</p>
+      <p><span>Password:</span> {{patient.user.patientPass}}</p>
     </div>
-    <a [routerLink]="['/patient-list']">Повернутися до списку пацієнтів</a>
   </div>
   <hr>
   <div class="row personal-data" *ngIf="doctor.role === 'Gynecologist'">

@@ -50,16 +50,22 @@ export class PatientDetailsComponent implements OnInit {
     appliedActivities: ''
   };
 
-  constructor(private fb: FormBuilder, private userService: UserService, private router: Router, private modalService: NgbModal) { }
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private router: Router,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.patient = this.userService.getPatient();
     this.doctor = this.userService.getDoctor();
+    console.log(this.patient);
     this.patientDetailsForm = this.fb.group({
-      height: [''],
-      weight: [''],
-      pregnancyNumber: [''],
-      gestationPeriod: ['']
+      height: [this.patient.user.height],
+      weight: [this.patient.user.weight],
+      pregnancyNumber: [this.patient.user.pregnancyNumber],
+      gestationPeriod: [this.patient.user.gestationPeriod]
     });
     this.childrenForm = this.fb.group({
       firstName: [''],
@@ -98,6 +104,7 @@ export class PatientDetailsComponent implements OnInit {
     this.patient.user = {...this.patient.user, ...this.patientDetailsForm.getRawValue()};
     this.editMode = false;
     const userData = { data: {...this.patient.user} };
+    // console.log(userData);
     this.userService.editPatient(this.patient.user.id, userData)
       .subscribe();
   }
@@ -131,7 +138,6 @@ export class PatientDetailsComponent implements OnInit {
     const child = {...this.childrenForm.getRawValue()};
     const patientData = {
       data: {
-        familyDoctorId: this.doctor.id,
         motherId: this.patient.user.id,
         firstName: child.firstName,
         lastName: child.lastName,

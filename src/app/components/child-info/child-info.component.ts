@@ -11,6 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ChildInfoComponent implements OnInit {
 
+  doctor: any;
   child: any;
   patient: any;
   editMode = false;
@@ -27,15 +28,20 @@ export class ChildInfoComponent implements OnInit {
     effects: ''
   };
 
-  constructor(private userService: UserService, private fb: FormBuilder, private router: Router, private modalService: NgbModal) { }
+  constructor(
+    private userService: UserService,
+    private fb: FormBuilder,
+    private router: Router,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.child = this.userService.getChild();
     this.patient = this.userService.getPatient();
-
+    this.doctor = this.userService.getDoctor();
     this.childrenForm = this.fb.group({
-      height: [''],
-      weight: [''],
+      height: [this.child.user.height],
+      weight: [this.child.user.weight],
     });
 
     this.addMedicineForm = this.fb.group({
@@ -55,16 +61,19 @@ export class ChildInfoComponent implements OnInit {
   }
 
   onPatientDetailsSubmit() {
+    this.child.user = {...this.child.user, ...this.childrenForm.getRawValue()};
     this.editMode = false;
-    const childData = {
-      data: {
-        ...this.childrenForm.getRawValue(),
-        firstname: this.child.user.firstname,
-        lastname: this.child.user.lastname,
-      }
-    };
+    const childData = { data: {...this.child.user} };
+    // const childData = {
+    //   data: {
+    //     ...this.childrenForm.getRawValue(),
+    //     firstname: this.child.user.firstname,
+    //     lastname: this.child.user.lastname,
+    //   }
+    // };
 
-    console.log(this.childrenForm.getRawValue());
+    // console.log(this.childrenForm.getRawValue());
+    console.log(childData);
 
     this.userService.editPatient(this.child.id, childData)
       .subscribe(res => console.log(res));

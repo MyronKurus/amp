@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4 offset-md-8">
-      <h5 *ngIf="doctor.firstName" >Вітаю, {{doctor.firstName}}
+      <h5 *ngIf="doctor.firstName" >Вітаю, {{doctor.firstName}}!
           <button class="btn btn-success"
           style="float: right"
           (click)="onLogOut()">Вийти</button>
@@ -30,17 +30,32 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <ol>
-        <li *ngFor="let patient of patients; let i = index;">
-          <a (click)="onGetPatientInfo(patient.id)">{{patient.lastName}} {{patient.firstName}} {{patient.middleName}} - {{patient.birthDate  | date: 'd.MM.yyyy'}}</a>
-          <button type="button" class="btn btn-danger" (click)="onDeletePatient(patient.id, i)" style="float: right">Видалити</button>
-        </li>
-      </ol>
+  <div class="row patient-header">
+    <div class="col-md-6">
+      Прізвище, Ім'я, По-батькові пацієнта
+    </div>
+    <div class="col-md-4">
+      Дата народження
+    </div>
+  </div>
+  <div class="row patient" *ngFor="let patient of patients; let i = index;" (click)="onGetPatientInfo(patient.id)">
+    <div class="col-md-6 patient-name">
+      <a>{{i+1}}. {{patient.lastName}} {{patient.firstName}} {{patient.middleName}}</a>
+    </div>
+    <div class="col-md-4 patient-date">
+      {{patient.birthDate  | date: 'dd/MM/yyyy'}}
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-danger" (click)="onDeletePatient(patient.id, i)" style="float: right">Видалити</button>
     </div>
   </div>
 </div>
+      <!-- <ol>
+        <li >
+          <a (click)="onGetPatientInfo(patient.id)">{{patient.lastName}} {{patient.firstName}} {{patient.middleName}} - {{patient.birthDate  | date: 'd.MM.yyyy'}}</a>
+          <button type="button" class="btn btn-danger" (click)="onDeletePatient(patient.id, i)" style="float: right">Видалити</button>
+        </li>
+      </ol> -->
 
 <ng-template #addHinecologPatientModal let-modal>
   <div class="modal-header">
