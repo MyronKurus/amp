@@ -120,7 +120,7 @@ export class PatientListComponent implements OnInit {
     this.userService.addPatientFamilyDoc(this.doctor.id, patientData)
       .subscribe((data: any) => {
         // this.patientList.push(data.item.user);
-        this.patients.push(data.item);
+        this.patients.push(data.item.user);
       });
   }
 

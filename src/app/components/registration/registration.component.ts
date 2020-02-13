@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { MustMatch } from '../../helpers/must-match';
+import { tap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-registration',
@@ -46,12 +47,15 @@ export class RegistrationComponent implements OnInit {
       }
     };
     this.user.register(formData)
-      .subscribe((data) => {
-        this.router.navigate(['/login']);
+    .pipe(tap((data: any) => {
+      this.user.setToken(data.item.token); }),
+      switchMap(() => this.user.getUserMe()))
+      .subscribe(() => {
+        this.router.navigate(['patient-list']);
       }, (err) => {
         this.error = true;
         this.errors = err.error.errors;
-      });
+       });
   }
 
   ngOnInit() {

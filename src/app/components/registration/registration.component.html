@@ -1,5 +1,5 @@
 <div class="container">
-  <h1>Зареєструватися</h1>
+  <h1 style="margin-top: 80px">Зареєструватися</h1>
   <form [formGroup]="registerForm" novalidate (ngSubmit)="submit()">
     <div class="form-group">
       <div class="row">
@@ -61,7 +61,7 @@
         <div class="col-md-4">
           <input type="text" formControlName="email" class="form-control" />
           <div class="alert alert-danger"
-            *ngIf="registerForm.controls['email'].email && registerForm.controls['email'].touched">
+            *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched">
             Це поле обов'язкове
           </div>
         </div>
@@ -73,7 +73,7 @@
         <div class="col-md-4">
           <input type="password" formControlName="password" class="form-control" />
           <div class="alert alert-danger"
-            *ngIf="registerForm.controls['password'].email && registerForm.controls['password'].touched">
+            *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched">
             Це поле обов'язкове
           </div>
         </div>
@@ -85,7 +85,7 @@
         <div class="col-md-4">
             <input type="password" formControlName="confirmPassword" class="form-control" />
             <div class="alert alert-danger"
-              *ngIf="registerForm.controls['confirmPassword'].email && registerForm.controls['confirmPassword'].touched">
+              *ngIf="registerForm.controls['confirmPassword'].invalid && registerForm.controls['confirmPassword'].touched">
               Це поле обов'язкове
             </div>
           <br>
