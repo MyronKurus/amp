@@ -6,11 +6,10 @@ import { environment } from 'src/environments/environment';
 @Injectable()
 export class UserService {
 
-  private authToken: string;
+  public authToken: string;
   private doctor: any;
   private patient: any;
   private child: any;
-  private authenticated = false;
 
   constructor(private http: HttpClient) { }
 
@@ -120,4 +119,14 @@ export class UserService {
     return this.http.post(`${environment.appUrl}/AssignedMedication/anamnes`, data, {headers});
   }
 
+  public saveSerologicalResult(data) {
+    const headers = this.getAuthHeaders();
+    return this.http.post(`${environment.appUrl}/SerologicalResult`, data, {headers});
+  }
+
+  public changeSerologicalResult(id) {
+    const headers = {'Authorization':  `Bearer ${this.getToken()}`}
+    console.log(headers);
+    return this.http.put(`${environment.appUrl}/SerologicalResult/${id}`, {headers});
+  }
 }

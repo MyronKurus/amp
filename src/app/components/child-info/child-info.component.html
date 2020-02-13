@@ -50,7 +50,7 @@
       </form>
     </div>
     <div class="col-md-8">
-      <button type="button" class="btn btn-danger" *ngIf="!editMode" (click)="onDeletePatient()">Видалити</button>
+      <!-- <button type="button" class="btn btn-danger" *ngIf="!editMode" (click)="onDeletePatient()">Видалити</button> -->
       <button type="button" class="btn btn-primary" *ngIf="!editMode" (click)="onEditModeToggle()">Редагувати</button>
       <button type="submit" class="btn btn-secondary" *ngIf="editMode" (click)="onEditModeToggle()">Скасувати</button>
       <button type="submit" class="btn btn-primary" *ngIf="editMode" (click)="onPatientDetailsSubmit()">Зберегти</button>

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HttpHeaders } from '@angular/common/http';
 
 
 
@@ -20,6 +21,8 @@ export class PatientDetailsComponent implements OnInit {
   addMedicineForm: FormGroup;
   addAnamnesisForm: FormGroup;
   editMode = false;
+  serologyTitle: string;
+  serologies: any[] = [];
 
   child = {
     id: '',
@@ -50,6 +53,65 @@ export class PatientDetailsComponent implements OnInit {
     appliedActivities: ''
   };
 
+  serologyParams = [
+    {
+      concentation: '0,00-0,34',
+      contentRating: 'IgE відсутні або важко виявляються',
+      selectedRating: false,
+      eastClass: 0,
+      title: '',
+      userId: ''
+    },
+    {
+      concentation: '0,35-0,69',
+      contentRating: 'Нижній поріг',
+      selectedRating: false,
+      eastClass: 1,
+      title: '',
+      userId: ''
+    },
+    {
+      concentation: '0,70-3,49',
+      contentRating: 'Дещо підвищений',
+      selectedRating: false,
+      eastClass: 2,
+      title: '',
+      userId: ''
+    },
+    {
+      concentation: '3,50-17,49',
+      contentRating: 'Значно підвищений',
+      selectedRating: false,
+      eastClass: 3,
+      title: '',
+      userId: ''
+    },
+    {
+      concentation: '17,50-49,99',
+      contentRating: 'Високий',
+      selectedRating: false,
+      eastClass: 4,
+      title: '',
+      userId: ''
+    },
+    {
+      concentation: '50,00-99,99',
+      contentRating: 'Дуже високий',
+      selectedRating: false,
+      eastClass: 5,
+      title: '',
+      userId: ''
+    },
+    {
+      concentation: '≥100,00',
+      contentRating: 'Надзвичайно високий',
+      selectedRating: false,
+      eastClass: 6,
+      title: '',
+      userId: ''
+    }
+  ];
+
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
@@ -58,9 +120,28 @@ export class PatientDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // console.log(this.userService.getToken());
+    // const headers = new HttpHeaders({'Authorization':  `Bearer ${this.userService.authToken}`});
+
+    // console.log(headers);
     this.patient = this.userService.getPatient();
     this.doctor = this.userService.getDoctor();
-    console.log(this.patient);
+    if (this.patient.serologicalResults.length) {
+      this.patient.serologicalResults.forEach(elem => {
+        if (elem.selectedRating) {
+          console.log();
+          this.serologies.push(elem);
+        } else {
+          console.log(elem);
+        }
+      });
+    }
+    if (!this.patient.anamnes) {
+      this.patient.anamnes = [];
+    }
+    if (!this.patient.user.hypersensitivityLz) {
+      this.patient.user.hypersensitivityLz = false;
+    }
     this.patientDetailsForm = this.fb.group({
       height: [this.patient.user.height],
       weight: [this.patient.user.weight],
@@ -104,7 +185,6 @@ export class PatientDetailsComponent implements OnInit {
     this.patient.user = {...this.patient.user, ...this.patientDetailsForm.getRawValue()};
     this.editMode = false;
     const userData = { data: {...this.patient.user} };
-    // console.log(userData);
     this.userService.editPatient(this.patient.user.id, userData)
       .subscribe();
   }
@@ -221,7 +301,7 @@ export class PatientDetailsComponent implements OnInit {
     };
 
     this.userService.addAssignedMedicationAnamnesis(medication)
-      .subscribe((data: any) => console.log(data));
+      .subscribe((data: any) => this.patient.anamnes.push(data.item));
   }
 
   setChild(id) {
@@ -243,6 +323,55 @@ export class PatientDetailsComponent implements OnInit {
   onLogOut() {
     this.userService.setToken(null);
     this.router.navigate(['/login']);
+  }
+
+  checkSerologyValue(event, item) {
+    // this.patient.serologicalResults = [];
+    // if (event.target.checked) {
+    //   this.serologyParams.forEach((elem, index) => {
+    //     if (index === id) {
+    //       elem.selectedRating = true;
+    //     } else {
+    //       elem.selectedRating = false;
+    //     }
+    //     elem = { ...elem, title: this.serologyTitle, userId: this.patient.user.id };
+    //     console.log(elem);
+    //     this.patient.serologicalResults.push(elem);
+    //   });
+    // } else if (!event.target.checked) {
+    //   this.serologyParams.forEach(elem => {
+    //     elem.selectedRating = false;
+    //     elem = { ...elem, title: this.serologyTitle, userId: this.patient.user.id };
+    //     console.log(elem);
+    //     this.patient.serologicalResults.push(elem);
+    //   });
+    // }
+
+    // if (event.target.checked) {
+    //   this.serologyParams.forEach((elem, index) => {
+    //     this.
+    //   });
+    // }
+
+    // if (event.target.checked) {
+    //   console.log(item);
+    // }
+
+
+    this.userService.changeSerologicalResult(4)
+     .subscribe(data => console.log(data));
+  }
+
+  onSaveSerologicalResults() {
+    const serologicalData = {
+      data: {
+        title: this.serologyTitle,
+        userId: this.patient.user.id
+      }
+    };
+
+    // this.userService.saveSerologicalResult(serologicalData)
+    //   .subscribe(data => console.log(data));
   }
 
 }

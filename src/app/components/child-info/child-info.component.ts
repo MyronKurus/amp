@@ -61,27 +61,14 @@ export class ChildInfoComponent implements OnInit {
   }
 
   onPatientDetailsSubmit() {
-    this.child.user = {...this.child.user, ...this.childrenForm.getRawValue()};
     this.editMode = false;
-    const childData = { data: {...this.child.user} };
-    // const childData = {
-    //   data: {
-    //     ...this.childrenForm.getRawValue(),
-    //     firstname: this.child.user.firstname,
-    //     lastname: this.child.user.lastname,
-    //   }
-    // };
+    const childData = { data: {...this.child.user, ...this.childrenForm.getRawValue() } };
 
-    // console.log(this.childrenForm.getRawValue());
-    console.log(childData);
-
-    this.userService.editPatient(this.child.id, childData)
-      .subscribe(res => console.log(res));
-  }
-
-  onDeletePatient() {
-    this.userService.deletePatient(this.patient.user.id)
-      .subscribe(() => this.router.navigate(['patient-list']));
+    this.userService.editPatient(this.child.user.id, childData)
+      .subscribe((res: any) => {
+        this.child.user.height = res.item.height;
+        this.child.user.weight = res.item.weight;
+      });
   }
 
   openMedicineModal(targetModal, medicine) {

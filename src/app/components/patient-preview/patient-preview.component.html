@@ -63,7 +63,7 @@
       <p>Підвищена чутливість чи непереносимість ЛЗ у минулому:</p>
     </div>
     <div class="col-md-12">
-      <table class="table table-striped">
+      <table class="table table-striped" *ngIf="patient.user.user.hypersensitivityLz">
         <thead>
         <tr>
           <th scope="col">№</th>
@@ -77,16 +77,16 @@
         </tr>
         </thead>
         <tbody>
-        <!-- <tr *ngFor="let country of countries; index as i">
-          <th scope="row">{{ i + 1 }}</th> -->
-          <!-- <td>
-            <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
-            {{ country.name }}
-          </td>
-          <td>{{ country.area | number }}</td>
-          <td>{{ country.population | number }}</td> -->
-        <!-- </tr> -->
-        <tr></tr>
+          <tr *ngFor="let anamnMedicine of patient.user.anamnes; index as i">
+            <td>{{i + 1}}</td>
+            <td>{{anamnMedicine.medicationName}}</td>
+            <td>{{anamnMedicine.internetialMedicationName}}</td>
+            <td>{{anamnMedicine.dose}}</td>
+            <td>{{anamnMedicine.inputMethod}}</td>
+            <td>{{anamnMedicine.adverseReactions}}</td>
+            <td>{{anamnMedicine.periodsOfEffects}}</td>
+            <td>{{anamnMedicine.appliedActivities}}</td>
+          </tr>
         </tbody>
       </table>
     </div>
