@@ -23,6 +23,7 @@ export class PatientDetailsComponent implements OnInit {
   editMode = false;
   serologyTitle: string;
   serologies: any[] = [];
+  createdValues: any[] = [];
 
   child = {
     id: '',
@@ -120,19 +121,12 @@ export class PatientDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // console.log(this.userService.getToken());
-    // const headers = new HttpHeaders({'Authorization':  `Bearer ${this.userService.authToken}`});
-
-    // console.log(headers);
     this.patient = this.userService.getPatient();
     this.doctor = this.userService.getDoctor();
     if (this.patient.serologicalResults.length) {
       this.patient.serologicalResults.forEach(elem => {
         if (elem.selectedRating) {
-          console.log();
           this.serologies.push(elem);
-        } else {
-          console.log(elem);
         }
       });
     }
@@ -347,19 +341,10 @@ export class PatientDetailsComponent implements OnInit {
     //   });
     // }
 
-    // if (event.target.checked) {
-    //   this.serologyParams.forEach((elem, index) => {
-    //     this.
-    //   });
-    // }
-
-    // if (event.target.checked) {
-    //   console.log(item);
-    // }
-
-
-    this.userService.changeSerologicalResult(4)
-     .subscribe(data => console.log(data));
+    if (event.target.checked) {
+      this.userService.changeSerologicalResult(item.id)
+        .subscribe((data: any) => this.serologies.push(data.item));
+    }
   }
 
   onSaveSerologicalResults() {
@@ -370,8 +355,8 @@ export class PatientDetailsComponent implements OnInit {
       }
     };
 
-    // this.userService.saveSerologicalResult(serologicalData)
-    //   .subscribe(data => console.log(data));
+    this.userService.saveSerologicalResult(serologicalData)
+      .subscribe((data: any) => this.createdValues = [...data.items]);
   }
 
 }

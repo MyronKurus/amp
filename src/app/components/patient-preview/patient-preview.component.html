@@ -57,9 +57,9 @@
   </div>
   <div class="row anamnesis">
     <div class="col-md-12">
-      <h3>3.Алергологічний анамнез</h3>
+      <h3>Алергологічний анамнез</h3>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12" *ngIf="patient.user.user.hypersensitivityLz">
       <p>Підвищена чутливість чи непереносимість ЛЗ у минулому:</p>
     </div>
     <div class="col-md-12">
@@ -93,35 +93,33 @@
   </div>
   <div class="row serology">
     <div class="col-md-12">
-      <h3>4.Результати серологічних досліджень крові вагітної</h3>
+      <h3>Результати серологічних досліджень крові вагітної</h3>
       <p>Персоніфікований перелік ЛЗ, які потенційно небезпечні щодо розвитку алергійних реакцій у вагітної та новонародженого. Оцінка вмісту в сироватці специфічних IgE до конкретних ЛЗ</p>
     </div>
     <div class="col-md-12">
-      <table class="table table-striped col-md-7">
-        <thead>
-        <tr>
-          <th scope="col">МО/мл визначена концентрація</th>
-          <th scope="col">EAST-клас</th>
-          <th scope="col"> Оцінка вмісту в сироватці
-              амоксицилін-специфічних IgE</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- <tr *ngFor="let country of countries; index as i">
-          <th scope="row">{{ i + 1 }}</th> -->
-          <!-- <td>
-            <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
-            {{ country.name }}
-          </td>
-          <td>{{ country.area | number }}</td> -->
-        <!-- </tr> -->
-        <tr>
-          <td>0,00-0,34</td>
-          <td>0</td>
-          <td>Дещо  підвищений</td>
-        </tr>
-        </tbody>
-      </table>
+      <div class="row serology-preview" *ngFor="let serology of patient.user.serologicalResults">
+        <div class="col-md-12">
+          <h4>{{serology.title}}</h4>
+        </div>
+        <div class="col-md-7">
+           <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">МО/мл визначена концентрація</th>
+                <th scope="col">EAST-клас</th>
+                <th scope="col">Оцінка вмісту в сироватці амоксицилін-специфічних IgE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{serology.concentration}}</td>
+                <td>{{serology.eastClass}}</td>
+                <td style="text-align: left"><input type="checkbox" style="margin-right: 10px" [disabled]="true" checked="true"> {{serology.contentRating}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
   <div class="row kids">

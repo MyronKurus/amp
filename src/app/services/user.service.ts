@@ -125,8 +125,7 @@ export class UserService {
   }
 
   public changeSerologicalResult(id) {
-    const headers = {'Authorization':  `Bearer ${this.getToken()}`}
-    console.log(headers);
+    const headers = {'Authorization':  `Bearer ${this.getToken()}`};
     return this.http.put(`${environment.appUrl}/SerologicalResult/${id}`, {headers});
   }
 }

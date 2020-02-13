@@ -37,11 +37,11 @@
       <p><span *ngIf="patient.user.height">{{patient.user.height}}, см</span></p>
       <p><span *ngIf="patient.user.weight">{{patient.user.weight}}, кг</span></p>
       <p><span *ngIf="patient.user.pregnancyNumber">{{patient.user.pregnancyNumber}}</span></p>
-      <p><span *ngIf="patient.user.gestationPeriod">{{patient.user.gestationPeriod}}</span></p>
+      <p><span *ngIf="patient.user.gestationPeriod">{{patient.user.gestationPeriod}}, тижні</span></p>
       <p style="margin-top: -16px;"><span *ngIf="!patient.user.height">0, см</span></p>
       <p><span *ngIf="!patient.user.weight">0, кг</span></p>
       <p><span *ngIf="!patient.user.pregnancyNumber">0</span></p>
-      <p><span *ngIf="!patient.user.gestationPeriod">0</span></p>
+      <p><span *ngIf="!patient.user.gestationPeriod">0, тижні</span></p>
     </div>
     <div class="col-md-2" *ngIf="editMode">
       <form [formGroup]="patientDetailsForm" (ngSubmit)="onPatientDetailsSubmit()">
@@ -173,7 +173,52 @@
         <p>Персоніфікований перелік ЛЗ, які потенційно небезпечні щодо розвитку алергійних реакцій у вагітної та новонародженого. Оцінка вмісту в сироватці специфічних IgE до конкретних ЛЗ</p>
       </div>
       <div class="col-md-12" *ngIf="editMode">
-        <input type="text" class="form-control col-md-5" style="margin-bottom: 20px" [(ngModel)]="serologyTitle" placeholder="Додати показник">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-5">
+              <input type="text" class="form-control" style="margin-bottom: 20px" [(ngModel)]="serologyTitle" placeholder="Показник">
+            </div>
+            <div class="col-md-2">
+              <button class="form-control" type="button"
+              class="btn btn-secondary"
+              (click)="onSaveSerologicalResults()"
+              style="float: right"
+              *ngIf="doctor.role === 'Gynecologist' && editMode">Додати</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-7">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">МО/мл визначена концентрація</th>
+                    <th scope="col">EAST-клас</th>
+                    <th scope="col">Оцінка вмісту в сироватці амоксицилін-специфічних IgE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let param of createdValues">
+                    <td>{{param.concentration}}</td>
+                    <td>{{param.eastClass}}</td>
+                    <td style="text-align: left">
+                      <input
+                        type="checkbox"
+                        style="margin-right: 10px"
+                        [disabled]="false"
+                        (change)="checkSerologyValue($event, param)"> {{param.contentRating}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- <input type="text" class="form-control col-md-5" style="margin-bottom: 20px" [(ngModel)]="serologyTitle" placeholder="Показник">
+        <button class="form-control col-md-2" type="button"
+                class="btn btn-secondary"
+                (click)="onSaveSerologicalResults()"
+                style="float: right"
+                *ngIf="doctor.role === 'Gynecologist' && editMode">Додати</button>
         <table class="table table-striped col-md-7">
           <thead>
             <tr>
@@ -182,7 +227,21 @@
               <th scope="col">Оцінка вмісту в сироватці амоксицилін-специфічних IgE</th>
             </tr>
           </thead>
-          <!-- <tbody *ngIf="!editMode && patient.serologicalResults">
+          <tbody>
+            <tr *ngFor="let param of serologyParams; let i = index">
+              <td>{{param.concentation}}</td>
+              <td>{{param.eastClass}}</td>
+              <td style="text-align: left"><input type="checkbox" style="margin-right: 10px" [disabled]="true" (change)="checkSerologyValue($event, param)"> {{param.contentRating}}</td>
+            </tr>
+          </tbody>
+        </table> -->
+        <!-- <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="onSaveSerologicalResults()"
+                style="float: right"
+                *ngIf="doctor.role === 'Gynecologist' && editMode">Змінити запис</button> -->
+                          <!-- <tbody *ngIf="!editMode && patient.serologicalResults">
             <tr *ngFor="let result of patient.serologicalResults">
               <td>{{result.concentration}}</td>
               <td>{{result.eastClass}}</td>
@@ -191,21 +250,33 @@
                   {{result.contentRating}}</td>
             </tr>
           </tbody> -->
-          <tbody>
-            <tr *ngFor="let param of serologyParams; let i = index">
-              <td>{{param.concentation}}</td>
-              <td>{{param.eastClass}}</td>
-              <td style="text-align: left"><input type="checkbox" style="margin-right: 10px" [disabled]="param.selectedRating" (change)="checkSerologyValue($event, param)"> {{param.contentRating}}</td>
-            </tr>
-          </tbody>
-        </table>
-        <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="onSaveSerologicalResults()"
-                style="float: right"
-                *ngIf="doctor.role === 'Gynecologist' && editMode">Змінити запис</button>
 
+      </div>
+      <div class="col-md-12" *ngIf="!editMode">
+        <div class="row serology-preview" *ngFor="let serology of serologies">
+          <div class="col-md-12">
+            <h4>{{serology.title}}</h4>
+          </div>
+          <div class="col-md-7">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">МО/мл визначена концентрація</th>
+                  <th scope="col">EAST-клас</th>
+                  <th scope="col">Оцінка вмісту в сироватці амоксицилін-специфічних IgE</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{serology.concentration}}</td>
+                  <td>{{serology.eastClass}}</td>
+                  <td style="text-align: left"><input type="checkbox" style="margin-right: 10px" [disabled]="true" checked="true"> {{serology.contentRating}}</td>
+                  <!-- (change)="checkSerologyValue($event, param)" -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
