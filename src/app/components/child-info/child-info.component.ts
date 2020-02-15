@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -45,8 +45,8 @@ export class ChildInfoComponent implements OnInit {
     });
 
     this.addMedicineForm = this.fb.group({
-      date: [''],
-      medicationName: [''],
+      date: ['', Validators.required],
+      medicationName: ['', Validators.required],
       internetialMedicationName: [''],
       dose: [''],
       inputMethod: [''],
@@ -72,7 +72,6 @@ export class ChildInfoComponent implements OnInit {
   }
 
   openMedicineModal(targetModal, medicine) {
-    this.childrenForm.reset();
 
     this.modalService.open(targetModal, {
       centered: true,

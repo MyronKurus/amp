@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
-import { element } from 'protractor';
 
 @Component({
   selector: 'app-patient-list',
@@ -41,14 +40,14 @@ export class PatientListComponent implements OnInit {
     this.doctor = this.userService.getDoctor();
     this.onGetPatientList();
     this.addHinekologyPatientForm = this.fb.group({
-      firstName: [''],
-      lastName: [''],
-      middleName: [''],
-      dateOfBirth: ['']
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      middleName: ['', Validators.required],
+      dateOfBirth: ['', Validators.required]
     });
     this.addFamilyPatientForm = this.fb.group({
-      personalKey: [''],
-      password: ['']
+      personalKey: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
@@ -127,8 +126,17 @@ export class PatientListComponent implements OnInit {
   onGetPatientInfo(patientId) {
     this.userService.getPatientById(patientId)
       .subscribe((data: any) => {
-        this.userService.setPatient(data.item);
-        this.router.navigate(['patient-details']);
+        if (data.item.user.role === 'Kid') {
+          this.userService.setChild(data.item);
+          this.userService.getPatientById(data.item.user.motherId)
+            .subscribe((result: any) => {
+              this.userService.setPatient(result.item);
+              this.router.navigate(['child-info']);
+            });
+        } else {
+          this.userService.setPatient(data.item);
+          this.router.navigate(['patient-details']);
+        }
       });
   }
 

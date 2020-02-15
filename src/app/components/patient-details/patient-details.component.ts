@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpHeaders } from '@angular/common/http';
 
@@ -143,15 +143,15 @@ export class PatientDetailsComponent implements OnInit {
       gestationPeriod: [this.patient.user.gestationPeriod]
     });
     this.childrenForm = this.fb.group({
-      firstName: [''],
-      lastName: [''],
-      middleName: [''],
-      dateOfBirth: ['']
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      middleName: ['', Validators.required],
+      dateOfBirth: ['', Validators.required]
     });
 
     this.addMedicineForm = this.fb.group({
-      date: [''],
-      medicationName: [''],
+      date: ['', Validators.required],
+      medicationName: ['', Validators.required],
       internetialMedicationName: [''],
       dose: [''],
       inputMethod: [''],
@@ -161,7 +161,7 @@ export class PatientDetailsComponent implements OnInit {
     });
 
     this.addAnamnesisForm = this.fb.group({
-      medicationName: [''],
+      medicationName: ['', Validators.required],
       internetialMedicationName: [''],
       dose: [''],
       inputMethod: [''],
@@ -212,6 +212,7 @@ export class PatientDetailsComponent implements OnInit {
     const child = {...this.childrenForm.getRawValue()};
     const patientData = {
       data: {
+        familyDoctorId: this.doctor.id,
         motherId: this.patient.user.id,
         firstName: child.firstName,
         lastName: child.lastName,
