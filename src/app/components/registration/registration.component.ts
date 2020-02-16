@@ -23,14 +23,15 @@ export class RegistrationComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       middleName: [ '', Validators.required ],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern('(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=[^0-9]*[0-9]).{8,}')]],
       confirmPassword: ['', Validators.required]
     },
     {
       validator: MustMatch('password', 'confirmPassword')
     });
   }
+  // regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'
 
   get f() { return this.registerForm.controls; }
 

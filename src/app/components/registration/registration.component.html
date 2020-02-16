@@ -74,7 +74,7 @@
           <input type="password" formControlName="password" class="form-control" />
           <div class="alert alert-danger"
             *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched">
-            Це поле обов'язкове
+            Пароль повинен містити малі та великі літери, числові, а також спецсимволи, та бути не коротшим, ніж 8 знаків
           </div>
         </div>
       </div>
@@ -84,9 +84,9 @@
         </div>
         <div class="col-md-4">
             <input type="password" formControlName="confirmPassword" class="form-control" />
-            <div class="alert alert-danger"
+            <div class="alert alert-danger" style="position: relative;"
               *ngIf="registerForm.controls['confirmPassword'].invalid && registerForm.controls['confirmPassword'].touched">
-              Це поле обов'язкове
+              Невірне підтвердження паролю
             </div>
           <br>
           <a routerLink="/login">Увійти</a>
