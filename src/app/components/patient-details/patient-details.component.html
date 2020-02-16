@@ -172,22 +172,37 @@
         <h3>4.Результати серологічних досліджень крові вагітної</h3>
         <p>Персоніфікований перелік ЛЗ, які потенційно небезпечні щодо розвитку алергійних реакцій у вагітної та новонародженого. Оцінка вмісту в сироватці специфічних IgE до конкретних ЛЗ</p>
       </div>
-      <div class="col-md-12" *ngIf="editMode">
+      <div class="col-md-12" *ngIf="editMode" style="padding-left: 0">
         <div class="col-md-12">
           <div class="row">
-            <div class="col-md-5">
-              <input type="text" class="form-control" style="margin-bottom: 20px" [(ngModel)]="serologyTitle" placeholder="Показник">
-            </div>
-            <div class="col-md-2">
-              <button class="form-control" type="button"
-              class="btn btn-secondary"
-              (click)="onSaveSerologicalResults()"
-              style="float: right"
-              *ngIf="doctor.role === 'Gynecologist' && editMode">Додати</button>
+            <div class="col-md-12">
+              <h6 style="font-weight: 700;">Додати нове значення:</h6>
             </div>
           </div>
           <div class="row">
+            <div class="col-md-5">
+              <input  type="text"
+                      class="form-control"
+                      style="margin-bottom: 20px"
+                      [(ngModel)]="serologyTitle"
+                      (keyup)="onSerologyInput($event)"
+                      placeholder="Показник">
+            </div>
+            <div class="col-md-2">
+              <button class="form-control"
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="onSaveSerologicalResults()"
+                      style="float: right"
+                      *ngIf="doctor.role === 'Gynecologist' && editMode"
+                      [disabled]="addButtonDisabled">Додати</button>
+            </div>
+          </div>
+          <div class="row" *ngIf="!serologyAdded">
             <div class="col-md-7">
+              <h5 style="color: green;" *ngIf="showMessage">Виберіть значення:</h5>
+            </div>
+            <div class="col-md-7" *ngIf="showMessage">
               <table class="table table-striped">
                 <thead>
                   <tr>
@@ -212,47 +227,8 @@
             </div>
           </div>
         </div>
-
-        <!-- <input type="text" class="form-control col-md-5" style="margin-bottom: 20px" [(ngModel)]="serologyTitle" placeholder="Показник">
-        <button class="form-control col-md-2" type="button"
-                class="btn btn-secondary"
-                (click)="onSaveSerologicalResults()"
-                style="float: right"
-                *ngIf="doctor.role === 'Gynecologist' && editMode">Додати</button>
-        <table class="table table-striped col-md-7">
-          <thead>
-            <tr>
-              <th scope="col">МО/мл визначена концентрація</th>
-              <th scope="col">EAST-клас</th>
-              <th scope="col">Оцінка вмісту в сироватці амоксицилін-специфічних IgE</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let param of serologyParams; let i = index">
-              <td>{{param.concentation}}</td>
-              <td>{{param.eastClass}}</td>
-              <td style="text-align: left"><input type="checkbox" style="margin-right: 10px" [disabled]="true" (change)="checkSerologyValue($event, param)"> {{param.contentRating}}</td>
-            </tr>
-          </tbody>
-        </table> -->
-        <!-- <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="onSaveSerologicalResults()"
-                style="float: right"
-                *ngIf="doctor.role === 'Gynecologist' && editMode">Змінити запис</button> -->
-                          <!-- <tbody *ngIf="!editMode && patient.serologicalResults">
-            <tr *ngFor="let result of patient.serologicalResults">
-              <td>{{result.concentration}}</td>
-              <td>{{result.eastClass}}</td>
-              <td style="text-align: left">
-                  <input type="checkbox" style="margin-right: 10px" [disabled]="true" [checked]="result.selectedRating">
-                  {{result.contentRating}}</td>
-            </tr>
-          </tbody> -->
-
       </div>
-      <div class="col-md-12" *ngIf="!editMode">
+      <div class="col-md-12">
         <div class="row serology-preview" *ngFor="let serology of serologies">
           <div class="col-md-12">
             <h4>{{serology.title}}</h4>

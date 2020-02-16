@@ -24,6 +24,9 @@ export class PatientDetailsComponent implements OnInit {
   serologyTitle: string;
   serologies: any[] = [];
   createdValues: any[] = [];
+  serologyAdded = false;
+  addButtonDisabled = true;
+  showMessage = false;
 
   child = {
     id: '',
@@ -53,65 +56,6 @@ export class PatientDetailsComponent implements OnInit {
     periodsOfEffects: '',
     appliedActivities: ''
   };
-
-  serologyParams = [
-    {
-      concentation: '0,00-0,34',
-      contentRating: 'IgE відсутні або важко виявляються',
-      selectedRating: false,
-      eastClass: 0,
-      title: '',
-      userId: ''
-    },
-    {
-      concentation: '0,35-0,69',
-      contentRating: 'Нижній поріг',
-      selectedRating: false,
-      eastClass: 1,
-      title: '',
-      userId: ''
-    },
-    {
-      concentation: '0,70-3,49',
-      contentRating: 'Дещо підвищений',
-      selectedRating: false,
-      eastClass: 2,
-      title: '',
-      userId: ''
-    },
-    {
-      concentation: '3,50-17,49',
-      contentRating: 'Значно підвищений',
-      selectedRating: false,
-      eastClass: 3,
-      title: '',
-      userId: ''
-    },
-    {
-      concentation: '17,50-49,99',
-      contentRating: 'Високий',
-      selectedRating: false,
-      eastClass: 4,
-      title: '',
-      userId: ''
-    },
-    {
-      concentation: '50,00-99,99',
-      contentRating: 'Дуже високий',
-      selectedRating: false,
-      eastClass: 5,
-      title: '',
-      userId: ''
-    },
-    {
-      concentation: '≥100,00',
-      contentRating: 'Надзвичайно високий',
-      selectedRating: false,
-      eastClass: 6,
-      title: '',
-      userId: ''
-    }
-  ];
 
   constructor(
     private fb: FormBuilder,
@@ -321,34 +265,26 @@ export class PatientDetailsComponent implements OnInit {
   }
 
   checkSerologyValue(event, item) {
-    // this.patient.serologicalResults = [];
-    // if (event.target.checked) {
-    //   this.serologyParams.forEach((elem, index) => {
-    //     if (index === id) {
-    //       elem.selectedRating = true;
-    //     } else {
-    //       elem.selectedRating = false;
-    //     }
-    //     elem = { ...elem, title: this.serologyTitle, userId: this.patient.user.id };
-    //     console.log(elem);
-    //     this.patient.serologicalResults.push(elem);
-    //   });
-    // } else if (!event.target.checked) {
-    //   this.serologyParams.forEach(elem => {
-    //     elem.selectedRating = false;
-    //     elem = { ...elem, title: this.serologyTitle, userId: this.patient.user.id };
-    //     console.log(elem);
-    //     this.patient.serologicalResults.push(elem);
-    //   });
-    // }
-
     if (event.target.checked) {
       this.userService.changeSerologicalResult(item.id)
-        .subscribe((data: any) => this.serologies.push(data.item));
+        .subscribe((data: any) => {
+          this.serologies.push(data.item);
+          this.serologyTitle = '';
+          this.serologyAdded = true;
+          this.showMessage = this.showMessage;
+        });
+    }
+  }
+
+  onSerologyInput(event) {
+    if (event.target.value.length > 4) {
+      this.addButtonDisabled = false;
     }
   }
 
   onSaveSerologicalResults() {
+    this.addButtonDisabled = true;
+    this.serologyAdded = false;
     const serologicalData = {
       data: {
         title: this.serologyTitle,
@@ -357,7 +293,10 @@ export class PatientDetailsComponent implements OnInit {
     };
 
     this.userService.saveSerologicalResult(serologicalData)
-      .subscribe((data: any) => this.createdValues = [...data.items]);
+      .subscribe((data: any) => {
+        this.createdValues = [...data.items];
+        this.showMessage = true;
+      });
   }
 
 }
